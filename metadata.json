@@ -1,0 +1,5 @@
+{
+  "name": "UGC & Influencer Lead Finder",
+  "description": "An AI-powered tool to discover UGC creators and influencers on Instagram by scraping Google search results for specific cities and categories, extracting contact details and social stats.",
+  "requestFramePermissions": []
+}
