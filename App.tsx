@@ -45,11 +45,12 @@ const App: React.FC = () => {
       const result = await searchCreators(query, existingUsernames);
       
       if (result.leads.length === 0) {
-        setError("Nessun nuovo profilo trovato. Prova ad espandere i parametri di ricerca.");
+        setError("Nessun nuovo profilo trovato con questi criteri. Prova a cambiare città o nicchia.");
       } else {
         setLeads(prev => [...prev, ...result.leads]);
         setSources(prev => {
           const combined = [...prev, ...result.sources];
+          // Rimuovi duplicati dalle fonti
           return Array.from(new Map(combined.map(item => [item.uri, item])).values());
         });
       }
@@ -85,7 +86,7 @@ const App: React.FC = () => {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                <span>Export ({leads.length})</span>
+                <span>Download CSV ({leads.length})</span>
               </button>
             )}
           </div>
@@ -96,7 +97,7 @@ const App: React.FC = () => {
         <aside className="w-full lg:w-80 p-8 lg:border-r border-slate-200 bg-white lg:sticky lg:top-20 lg:h-[calc(100vh-80px)] overflow-y-auto">
           <form className="space-y-6">
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Network Target</label>
+              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Social Network</label>
               <div className="grid grid-cols-2 gap-2">
                 {['instagram.com', 'tiktok.com'].map(p => (
                   <button
@@ -116,7 +117,7 @@ const App: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Profilo Ricercato</label>
+              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Ruolo</label>
               <select
                 value={query.role}
                 onChange={(e) => setQuery({ ...query, role: e.target.value })}
@@ -127,7 +128,7 @@ const App: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Nicchia</label>
+              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Settore</label>
               <select
                 value={query.industry}
                 onChange={(e) => setQuery({ ...query, industry: e.target.value })}
@@ -138,7 +139,7 @@ const App: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Fascia Followers</label>
+              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Filtro Followers</label>
               <select
                 value={query.minFollowers}
                 onChange={(e) => setQuery({ ...query, minFollowers: e.target.value })}
@@ -149,13 +150,13 @@ const App: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Area Geografica</label>
+              <label className="block text-xs font-black text-slate-400 uppercase mb-2">Località</label>
               <input
                 type="text"
                 value={query.city}
                 onChange={(e) => setQuery({ ...query, city: e.target.value })}
                 className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-50 rounded-xl focus:border-indigo-500 focus:bg-white transition-all text-sm font-bold outline-none"
-                placeholder="Es: Napoli, Milano..."
+                placeholder="Es: Napoli..."
               />
             </div>
 
@@ -166,7 +167,7 @@ const App: React.FC = () => {
                 disabled={isLoading}
                 className="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-indigo-200 transition-all hover:bg-indigo-700 active:scale-95 disabled:bg-slate-300 disabled:shadow-none"
               >
-                {isLoading ? 'Sincronizzazione...' : 'Avvia Scansione'}
+                {isLoading ? 'Analisi Web...' : 'Trova Nuovi Lead'}
               </button>
             </div>
           </form>
@@ -174,28 +175,15 @@ const App: React.FC = () => {
 
         <main className="flex-grow p-8 lg:p-12 bg-[#F8FAFC]">
           {error && (
-            <div className="bg-white border-l-4 border-rose-500 p-6 rounded-2xl shadow-xl mb-10 animate-in fade-in slide-in-from-top-4">
-              <div className="flex items-start space-x-4">
-                <div className="bg-rose-100 p-2 rounded-lg text-rose-600">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-slate-900 font-black text-sm uppercase tracking-tight">Errore di Configurazione</p>
-                  <p className="text-slate-500 text-sm mt-1">{error}</p>
-                  {error.includes("API_KEY") && (
-                    <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-xs font-black text-slate-800 mb-2">GUIDA AL DEPLOY SU VERCEL:</p>
-                      <ul className="text-[11px] text-slate-600 space-y-2 list-disc ml-4">
-                        <li>Apri la Dashboard di <b>Vercel</b></li>
-                        <li>Seleziona questo progetto &gt; <b>Settings</b> &gt; <b>Environment Variables</b></li>
-                        <li>Aggiungi una nuova variabile: <b>Key:</b> <code className="bg-white px-1">API_KEY</code> | <b>Value:</b> <code className="bg-white px-1">[Tua Chiave]</code></li>
-                        <li><b>Salva</b> e vai nella tab <b>Deployments</b> per fare "Redeploy" dell'ultimo commit</li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
+            <div className="bg-white border-l-4 border-rose-500 p-6 rounded-2xl shadow-xl mb-10 animate-in fade-in slide-in-from-top-4 flex items-center space-x-4">
+              <div className="bg-rose-100 p-2 rounded-lg text-rose-600">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-slate-900 font-black text-sm uppercase">Errore di Ricerca</p>
+                <p className="text-slate-500 text-sm mt-1">{error}</p>
               </div>
             </div>
           )}
@@ -207,8 +195,8 @@ const App: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-black text-slate-800 tracking-tight">Pronto per l'estrazione</h2>
-              <p className="text-slate-400 mt-2 font-medium max-w-sm">Configura i parametri a sinistra e avvia la scansione web via AI.</p>
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">Cerca Creator Reali</h2>
+              <p className="text-slate-400 mt-2 font-medium max-w-sm">Usa l'intelligenza artificiale per navigare su Google e trovare lead verificati in base ai tuoi parametri.</p>
             </div>
           )}
 
@@ -231,7 +219,7 @@ const App: React.FC = () => {
 
           {sources.length > 0 && (
             <div className="mt-20 border-t border-slate-200 pt-10">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Fonti Verificate (AI Grounding)</h3>
+              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Link ai Risultati Originali</h3>
               <div className="flex flex-wrap gap-2">
                 {sources.map((s, i) => (
                   <a key={i} href={s.uri} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-slate-500 bg-white border border-slate-200 px-4 py-2 rounded-xl hover:text-indigo-600 transition-all shadow-sm">
