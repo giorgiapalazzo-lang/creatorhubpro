@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+
 import { CreatorLead, SearchQuery } from "../types.ts";
 
 export interface SearchResult {
@@ -6,88 +6,21 @@ export interface SearchResult {
   sources: { title: string; uri: string }[];
 }
 
-export const searchCreators = async (query: SearchQuery, existingUsernames: string[]): Promise<SearchResult> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  
-  const followerConstraint = query.minFollowers !== '300' ? `"${query.minFollowers} followers"` : '"followers"';
-  const baseSearch = `${query.role} ${query.industry} ${query.city} ${followerConstraint} site:${query.platform}`;
-  
-  const qualitySignals = `"reels" "posts" "${query.city}"`;
-  const contactMarkers = `("email" OR "mail" OR "whatsapp" OR "cell" OR "+39")`;
-  
-  // Aumentiamo leggermente il raggio di esclusione per evitare duplicati
-  const excludeUsernames = existingUsernames.length > 0 
-    ? existingUsernames.slice(0, 15).map(u => `-inurl:${u}`).join(" ")
-    : "";
+export const searchCreators = async (
+  query: SearchQuery,
+  existingUsernames: string[]
+): Promise<SearchResult> => {
+  const res = await fetch("/api/search-creators", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, existingUsernames }),
+  });
 
-  const finalSearchQuery = `${baseSearch} ${qualitySignals} ${contactMarkers} ${excludeUsernames}`;
+  const data = await res.json().catch(() => ({}));
 
-  const prompt = `
-    ESTRAZIONE RAPIDA DATI PROFESSIONALI. 
-    Analizza i risultati per la query: "${finalSearchQuery}"
-    
-    OBIETTIVO: Trova ed estrai ESATTAMENTE 6 profili validi che rispettano i seguenti criteri.
-    
-    REGOLE RIGIDE DI FILTRO:
-    1. QUANTITÀ: Devi restituire una lista di 6 profili. Non fermarti a 1 o 2.
-    2. FOLLOWERS: Estrai il numero esatto (es. 10.5k, 2.500). Deve essere > 300. Se non trovi il dato, scarta il profilo e cercane un altro.
-    3. POSTS: Solo profili con segnali chiari di oltre 20 post pubblicati.
-    4. REELS: Deve esserci evidenza di contenuti video/reels nello snippet.
-    5. BIO: La città "${query.city}" DEVE essere presente.
-    6. CONTATTI: Estrai email o cellulare se visibili. Priorità a chi ha contatti chiari.
-
-    OUTPUT RICHIESTO: Un array JSON con esattamente 6 oggetti.
-    Esempio: [{"name":"..","username":"..","profileUrl":"..","followers":"..","bio":"..","email":"..","phone":"..","industry":"${query.industry}","city":"${query.city}"}]
-  `;
-
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-        thinkingConfig: { thinkingBudget: 0 }
-      },
-    });
-
-    const text = response.text || "";
-    const jsonMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
-    const leadsRaw: CreatorLead[] = jsonMatch ? JSON.parse(jsonMatch[0]) : [];
-
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    const sources = groundingChunks
-      .filter((chunk: any) => chunk.web)
-      .map((chunk: any) => ({
-        title: chunk.web.title || "Social Link",
-        uri: chunk.web.uri
-      }));
-
-    const parseFollowers = (f: string): number => {
-      if (!f) return 0;
-      const clean = f.toLowerCase().replace(/,/g, '').replace(/ followers/g, '').replace(/ seguaci/g, '').trim();
-      if (clean.includes('k')) return parseFloat(clean.replace('k', '')) * 1000;
-      if (clean.includes('m')) return parseFloat(clean.replace('m', '')) * 1000000;
-      return parseInt(clean) || 0;
-    };
-
-    // Filtro secondario lato client per sicurezza
-    const filteredLeads = leadsRaw
-      .filter(lead => {
-        const notDuplicate = !existingUsernames.includes(lead.username);
-        return notDuplicate;
-      })
-      .map((lead, index) => ({
-        ...lead,
-        id: `${Date.now()}-${index}`
-      }));
-
-    return {
-      leads: filteredLeads,
-      sources: sources
-    };
-
-  } catch (error) {
-    console.error("Sync Error:", error);
-    throw error;
+  if (!res.ok) {
+    throw new Error(data?.error || "Errore durante la sincronizzazione con il database remoto");
   }
+
+  return data as SearchResult;
 };
