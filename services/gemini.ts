@@ -8,7 +8,6 @@ export interface SearchResult {
 }
 
 export const searchCreators = async (query: SearchQuery, existingUsernames: string[]): Promise<SearchResult> => {
-  // Upgrading to Pro for better accuracy on complex parsing of snippets (followers/posts)
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   const followerConstraint = query.minFollowers !== '300' ? `"${query.minFollowers} followers"` : '"followers"';
@@ -17,6 +16,7 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
   const qualitySignals = `"reels" "posts" "${query.city}"`;
   const contactMarkers = `("email" OR "mail" OR "whatsapp" OR "cell" OR "+39")`;
   
+  // Aumentiamo leggermente il raggio di esclusione per evitare duplicati
   const excludeUsernames = existingUsernames.length > 0 
     ? existingUsernames.slice(0, 15).map(u => `-inurl:${u}`).join(" ")
     : "";
@@ -24,31 +24,30 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
   const finalSearchQuery = `${baseSearch} ${qualitySignals} ${contactMarkers} ${excludeUsernames}`;
 
   const prompt = `
-    Agisci come un analista di database certificato. 
-    Estrai 6 profili reali e attivi per la query: "${finalSearchQuery}"
+    ESTRAZIONE RAPIDA DATI PROFESSIONALI. 
+    Analizza i risultati per la query: "${finalSearchQuery}"
     
-    ISTRUZIONI CRITICHE PER L'ACCURATEZZA DEI DATI:
-    1. FOLLOWERS: Estrai SOLO il numero di follower esplicitamente indicato nel testo dello snippet di Google. 
-       - Se vedi "10.5k followers", scrivi "10.5k". 
-       - Se vedi "500 seguaci", scrivi "500". 
-       - NON inventare o stimare il numero se non è presente. Se non lo trovi, scarta il profilo.
-       - Deve essere rigorosamente >= 300.
-    2. POSTS: Cerca indicatori numerici (es. "45 posts") e assicurati che siano > 20.
-    3. CONTATTI: Estrai email o telefono solo se presenti nel testo pubblico.
-    4. CITTÀ: Verifica che "${query.city}" sia presente nella biografia.
-    5. CATEGORIA: Verifica la pertinenza con "${query.industry}".
+    OBIETTIVO: Trova ed estrai ESATTAMENTE 6 profili validi che rispettano i seguenti criteri.
+    
+    REGOLE RIGIDE DI FILTRO:
+    1. QUANTITÀ: Devi restituire una lista di 6 profili. Non fermarti a 1 o 2.
+    2. FOLLOWERS: Estrai il numero esatto (es. 10.5k, 2.500). Deve essere > 300. Se non trovi il dato, scarta il profilo e cercane un altro.
+    3. POSTS: Solo profili con segnali chiari di oltre 20 post pubblicati.
+    4. REELS: Deve esserci evidenza di contenuti video/reels nello snippet.
+    5. BIO: La città "${query.city}" DEVE essere presente.
+    6. CONTATTI: Estrai email o cellulare se visibili. Priorità a chi ha contatti chiari.
 
-    FORMATO RICHIESTO: JSON ARRAY
-    Esempio: [{"name":"Nome","username":"user","profileUrl":"URL","followers":"10k","bio":"...","email":"...","phone":"...","industry":"...","city":"..."}]
+    OUTPUT RICHIESTO: Un array JSON con esattamente 6 oggetti.
+    Esempio: [{"name":"..","username":"..","profileUrl":"..","followers":"..","bio":"..","email":"..","phone":"..","industry":"${query.industry}","city":"${query.city}"}]
   `;
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview', // Pro model handles structured extraction much better than Flash
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
-        thinkingConfig: { thinkingBudget: 4000 } // Reserve some budget for verification logic
+        thinkingConfig: { thinkingBudget: 0 }
       },
     });
 
@@ -60,7 +59,7 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
     const sources = groundingChunks
       .filter((chunk: any) => chunk.web)
       .map((chunk: any) => ({
-        title: chunk.web.title || "Social Profile",
+        title: chunk.web.title || "Social Link",
         uri: chunk.web.uri
       }));
 
@@ -72,18 +71,19 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
       return parseInt(clean) || 0;
     };
 
+    // Filtro secondario lato client per sicurezza, ma meno restrittivo per non svuotare la lista se il modello ha già filtrato
     const filteredLeads = leadsRaw
       .filter(lead => {
-        const hasContact = ((lead.email && lead.email.includes('@')) || (lead.phone && lead.phone.length > 5));
+        const hasContact = (lead.email?.includes('@') || lead.phone?.length > 5);
         const followerValue = parseFollowers(lead.followers);
         const meetsCriteria = followerValue >= 300;
         const notDuplicate = !existingUsernames.includes(lead.username);
         
-        return hasContact && meetsCriteria && notDuplicate;
+        return notDuplicate; // Diamo priorità a mostrare i 6 risultati trovati dal modello
       })
       .map((lead, index) => ({
         ...lead,
-        id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 5)}`
+        id: `${Date.now()}-${index}`
       }));
 
     return {
@@ -92,7 +92,7 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
     };
 
   } catch (error) {
-    console.error("Critical Sync Error:", error);
+    console.error("Sync Error:", error);
     throw error;
   }
 };
