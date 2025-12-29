@@ -7,15 +7,10 @@ export default async function handler(req: any, res: any) {
   }
 
   const { query, existingUsernames } = req.body;
-  const apiKey = process.env.API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Configurazione mancante: API_KEY non trovata sul server.' });
-  }
-
-  const ai = new GoogleGenAI({ apiKey });
   
-  // Costruzione della query di ricerca avanzata
+  // Utilizzo diretto come da linee guida
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
   const followerConstraint = query.minFollowers !== '300' ? `"${query.minFollowers} followers"` : '"followers"';
   const baseSearch = `${query.role} ${query.industry} ${query.city} ${followerConstraint} site:${query.platform}`;
   const qualitySignals = `"reels" "posts" "${query.city}"`;
@@ -28,25 +23,28 @@ export default async function handler(req: any, res: any) {
   const finalSearchQuery = `${baseSearch} ${qualitySignals} ${contactMarkers} ${excludeUsernames}`;
 
   const prompt = `
-    DASHBOARD INTELLIGENCE - ESTRAZIONE LEAD.
-    Analizza i risultati web per: "${finalSearchQuery}"
+    AGENTE DI ESTRAZIONE LEAD AI.
+    Query di ricerca: "${finalSearchQuery}"
     
-    REQUISITI RIGIDI:
-    1. Trova 6 creator reali basati a ${query.city}.
-    2. Estrai il numero esatto di followers (es: 15.2k, 5k).
-    3. Trova contatti pubblici (email, cellulare o whatsapp).
-    4. Verifica che siano attivi nel settore "${query.industry}".
+    COMPITO:
+    Identifica 6 profili reali di creator su ${query.platform} a ${query.city}.
+    Per ogni profilo, estrai:
+    - Username esatto e URL profilo.
+    - Conteggio follower (es. 12.5k, 2k).
+    - Bio del profilo (riassunto).
+    - Email o numero di cellulare/WhatsApp se presenti pubblicamente.
+    - Categoria: ${query.role}.
 
     RESTITUISCI SOLO UN ARRAY JSON VALIDO:
     [
       {
-        "name": "Nome",
+        "name": "Nome Visualizzato",
         "username": "handle",
         "profileUrl": "URL",
         "followers": "Numero",
-        "bio": "Breve bio",
-        "email": "email o stringa vuota",
-        "phone": "numero o stringa vuota",
+        "bio": "Estratto bio",
+        "email": "email o vuoto",
+        "phone": "telefono o vuoto",
         "category": "${query.role}",
         "city": "${query.city}",
         "industry": "${query.industry}"
@@ -60,12 +58,12 @@ export default async function handler(req: any, res: any) {
       contents: prompt,
       config: {
         tools: [{ googleSearch: {} }],
+        responseMimeType: "application/json"
       },
     });
 
-    const text = response.text || "";
-    const jsonMatch = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
-    const leadsRaw = jsonMatch ? JSON.parse(jsonMatch[0]) : [];
+    const text = response.text || "[]";
+    const leadsRaw = JSON.parse(text);
 
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
     const sources = groundingChunks
@@ -77,12 +75,18 @@ export default async function handler(req: any, res: any) {
 
     const leadsWithIds = leadsRaw.map((lead: any, index: number) => ({
       ...lead,
-      id: `${Date.now()}-${index}`
+      id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`
     }));
 
     return res.status(200).json({ leads: leadsWithIds, sources });
   } catch (error: any) {
-    console.error(error);
-    return res.status(500).json({ error: error.message || 'Errore durante l\'analisi dei dati.' });
+    console.error("Gemini API Error:", error);
+    // Se l'errore è dovuto alla chiave mancante o invalida
+    if (error.message?.includes("API key")) {
+      return res.status(500).json({ 
+        error: "Configurazione API errata. Assicurati di aver impostato API_KEY nelle variabili d'ambiente di Vercel." 
+      });
+    }
+    return res.status(500).json({ error: error.message || 'Errore durante la ricerca dei lead.' });
   }
 }
