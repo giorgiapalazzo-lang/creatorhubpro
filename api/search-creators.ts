@@ -3,13 +3,21 @@ import { GoogleGenAI } from "@google/genai";
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Metodo non consentito' });
   }
 
   const { query, existingUsernames } = req.body;
-  
-  // Utilizzo diretto come da linee guida
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const apiKey = process.env.API_KEY;
+
+  // Controllo critico per evitare il fallback sui "default credentials" di Google Cloud
+  if (!apiKey || apiKey === "" || apiKey === "undefined") {
+    return res.status(401).json({ 
+      error: "Variabile d'ambiente API_KEY mancante. Configurala nelle impostazioni di Vercel (Environment Variables)." 
+    });
+  }
+
+  // Inizializzazione sicura con chiave verificata
+  const ai = new GoogleGenAI({ apiKey });
 
   const followerConstraint = query.minFollowers !== '300' ? `"${query.minFollowers} followers"` : '"followers"';
   const baseSearch = `${query.role} ${query.industry} ${query.city} ${followerConstraint} site:${query.platform}`;
@@ -23,33 +31,26 @@ export default async function handler(req: any, res: any) {
   const finalSearchQuery = `${baseSearch} ${qualitySignals} ${contactMarkers} ${excludeUsernames}`;
 
   const prompt = `
-    AGENTE DI ESTRAZIONE LEAD AI.
-    Query di ricerca: "${finalSearchQuery}"
+    DASHBOARD ESTRAZIONE LEAD.
+    Cerca su Google: "${finalSearchQuery}"
     
-    COMPITO:
-    Identifica 6 profili reali di creator su ${query.platform} a ${query.city}.
-    Per ogni profilo, estrai:
-    - Username esatto e URL profilo.
-    - Conteggio follower (es. 12.5k, 2k).
-    - Bio del profilo (riassunto).
-    - Email o numero di cellulare/WhatsApp se presenti pubblicamente.
-    - Categoria: ${query.role}.
+    ESTRAI 6 PROFILI REALI per la categoria "${query.role}" a ${query.city}.
+    
+    Per ogni profilo restituisci questo JSON esatto:
+    {
+      "name": "Nome",
+      "username": "handle",
+      "profileUrl": "URL",
+      "followers": "Numero",
+      "bio": "Riassunto bio",
+      "email": "email se trovata",
+      "phone": "numero se trovato",
+      "category": "${query.role}",
+      "city": "${query.city}",
+      "industry": "${query.industry}"
+    }
 
-    RESTITUISCI SOLO UN ARRAY JSON VALIDO:
-    [
-      {
-        "name": "Nome Visualizzato",
-        "username": "handle",
-        "profileUrl": "URL",
-        "followers": "Numero",
-        "bio": "Estratto bio",
-        "email": "email o vuoto",
-        "phone": "telefono o vuoto",
-        "category": "${query.role}",
-        "city": "${query.city}",
-        "industry": "${query.industry}"
-      }
-    ]
+    RESTITUISCI SOLO UN ARRAY JSON VALIDO [{}, {}...].
   `;
 
   try {
@@ -62,7 +63,9 @@ export default async function handler(req: any, res: any) {
       },
     });
 
-    const text = response.text || "[]";
+    const text = response.text;
+    if (!text) throw new Error("Risposta vuota dal modello.");
+
     const leadsRaw = JSON.parse(text);
 
     const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
@@ -75,18 +78,15 @@ export default async function handler(req: any, res: any) {
 
     const leadsWithIds = leadsRaw.map((lead: any, index: number) => ({
       ...lead,
-      id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`
+      id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 5)}`
     }));
 
     return res.status(200).json({ leads: leadsWithIds, sources });
+
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
-    // Se l'errore è dovuto alla chiave mancante o invalida
-    if (error.message?.includes("API key")) {
-      return res.status(500).json({ 
-        error: "Configurazione API errata. Assicurati di aver impostato API_KEY nelle variabili d'ambiente di Vercel." 
-      });
-    }
-    return res.status(500).json({ error: error.message || 'Errore durante la ricerca dei lead.' });
+    console.error("Gemini Error:", error);
+    return res.status(500).json({ 
+      error: error.message || "Errore durante l'elaborazione dei dati." 
+    });
   }
 }
