@@ -18,5 +18,4 @@ export interface SearchQuery {
   industry: string;
   city: string;
   platform: string;
-  minFollowers: string;
 }
