@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SearchQuery, CreatorLead } from './types';
 import { downloadLeadsAsCSV } from './utils/csv';
 import { searchCreators } from './services/gemini';
@@ -21,9 +21,17 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async () => {
+  // Controllo immediato all'avvio
+  useEffect(() => {
     if (!process.env.API_KEY) {
-      setError("API_KEY non trovata. Aggiungila nelle variabili d'ambiente di Vercel.");
+      console.warn("ATTENZIONE: API_KEY non configurata correttamente.");
+    }
+  }, []);
+
+  const handleSearch = async () => {
+    // Se la chiave è vuota o stringa "undefined", blocca e avvisa
+    if (!process.env.API_KEY || process.env.API_KEY === "undefined") {
+      setError("Configurazione mancante: vai su Vercel > Settings > Environment Variables e aggiungi API_KEY.");
       return;
     }
 
@@ -32,12 +40,12 @@ const App: React.FC = () => {
     try {
       const results = await searchCreators(query);
       if (results.length === 0) {
-        setError("Nessun creator trovato per questi criteri. Prova a cambiare città o categoria.");
+        setError("Nessun creator trovato. Prova a cambiare città o categoria.");
       } else {
         setLeads(prev => [...results, ...prev]);
       }
     } catch (err: any) {
-      setError(`Errore: ${err.message || "Impossibile completare la ricerca."}`);
+      setError(`Errore AI: ${err.message || "Impossibile completare la ricerca."}`);
       console.error(err);
     } finally {
       setIsLoading(false);
