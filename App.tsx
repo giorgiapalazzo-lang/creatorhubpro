@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { SearchQuery, CreatorLead } from './types.ts';
 import { searchCreators } from './services/gemini.ts';
@@ -110,7 +111,7 @@ const App: React.FC = () => {
           <div className="space-y-8">
             <section>
               <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Analisi Parametrica</h3>
-              <form className="space-y-5">
+              <form className="space-y-6">
                 <div>
                   <label className="block text-xs font-black text-slate-500 uppercase mb-2">Social Network</label>
                   <div className="grid grid-cols-2 gap-2">
@@ -132,7 +133,10 @@ const App: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase mb-2">Profilo Target</label>
+                  <div className="flex flex-col mb-2">
+                    <label className="text-xs font-black text-slate-800 uppercase">Specializzazione Creator</label>
+                    <span className="text-[10px] text-slate-400 font-medium">Seleziona il ruolo professionale per profilare meglio i risultati.</span>
+                  </div>
                   <select
                     value={query.role}
                     onChange={(e) => setQuery({ ...query, role: e.target.value })}
@@ -143,7 +147,10 @@ const App: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-500 uppercase mb-2">Settore</label>
+                  <div className="flex flex-col mb-2">
+                    <label className="text-xs font-black text-slate-800 uppercase">Nicchia di Mercato</label>
+                    <span className="text-[10px] text-slate-400 font-medium">Filtra per ambito operativo (es. Beauty, Food, Tech).</span>
+                  </div>
                   <select
                     value={query.industry}
                     onChange={(e) => setQuery({ ...query, industry: e.target.value })}
