@@ -1,6 +1,5 @@
-
 import { GoogleGenAI } from "@google/genai";
-import { CreatorLead, SearchQuery } from "../types";
+import { CreatorLead, SearchQuery } from "../types.ts";
 
 export interface SearchResult {
   leads: CreatorLead[];
@@ -71,15 +70,11 @@ export const searchCreators = async (query: SearchQuery, existingUsernames: stri
       return parseInt(clean) || 0;
     };
 
-    // Filtro secondario lato client per sicurezza, ma meno restrittivo per non svuotare la lista se il modello ha già filtrato
+    // Filtro secondario lato client per sicurezza
     const filteredLeads = leadsRaw
       .filter(lead => {
-        const hasContact = (lead.email?.includes('@') || lead.phone?.length > 5);
-        const followerValue = parseFollowers(lead.followers);
-        const meetsCriteria = followerValue >= 300;
         const notDuplicate = !existingUsernames.includes(lead.username);
-        
-        return notDuplicate; // Diamo priorità a mostrare i 6 risultati trovati dal modello
+        return notDuplicate;
       })
       .map((lead, index) => ({
         ...lead,

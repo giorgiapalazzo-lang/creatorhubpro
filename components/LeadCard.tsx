@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { CreatorLead } from '../types';
+import { CreatorLead } from '../types.ts';
 
 interface LeadCardProps {
   lead: CreatorLead;

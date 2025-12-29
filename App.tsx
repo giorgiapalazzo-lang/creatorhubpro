@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
-import { SearchQuery, CreatorLead } from './types';
-import { searchCreators } from './services/gemini';
-import { downloadLeadsAsCSV } from './utils/csv';
-import LeadCard from './components/LeadCard';
+import { SearchQuery, CreatorLead } from './types.ts';
+import { searchCreators } from './services/gemini.ts';
+import { downloadLeadsAsCSV } from './utils/csv.ts';
+import LeadCard from './components/LeadCard.tsx';
 
 const ROLES = ['UGC Creator', 'Content Creator', 'Influencer', 'Talent/VIP'];
 const INDUSTRIES = [
