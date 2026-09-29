@@ -110,10 +110,12 @@
 <section class="app-view" data-view="products">
   <div class="screen-head"><div><span class="screen-kicker">Buy Smart</span><h1>Confronta prima di comprare.</h1><p>Prezzo osservato, TCO, alternative e contesto. I valori in questa demo sono illustrativi.</p></div></div>
   <label class="mobile-search"><i data-lucide="search"></i><input id="product-search" placeholder="Cerca scanner, CBCT, 3D..."></label>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Cerca un prodotto, aprilo, salvalo oppure selezionane due per confrontarli.</span></div>
+  <div class="compare-selection" id="compare-selection"><span>Seleziona 2 prodotti per confrontarli</span><button class="btn primary" id="open-compare" disabled>Confronta</button></div>
   <div class="product-list" id="product-list">
-    <button class="product-row" data-product="Medit i700" data-price="7900" data-tco="10300"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Medit i700</b><span>Prezzo demo <strong>€7.900</strong> · TCO €10.300</span></span><i data-lucide="chevron-right"></i></button>
-    <button class="product-row" data-product="Aoralscan 3" data-price="6200" data-tco="8100"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Aoralscan 3</b><span>Prezzo demo <strong>€6.200</strong> · TCO €8.100</span></span><i data-lucide="chevron-right"></i></button>
-    <button class="product-row" data-product="Form 4B" data-price="6499" data-tco="14900"><span class="product-thumb"><i data-lucide="box"></i></span><span class="product-copy"><small>3D PRINTING</small><b>Form 4B</b><span>Prezzo demo <strong>€6.499</strong> · TCO €14.900</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="Medit i700" data-selectable="true" data-price="7900" data-tco="10300"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Medit i700</b><span>Prezzo demo <strong>€7.900</strong> · TCO €10.300</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="Aoralscan 3" data-selectable="true" data-price="6200" data-tco="8100"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Aoralscan 3</b><span>Prezzo demo <strong>€6.200</strong> · TCO €8.100</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="Form 4B" data-selectable="true" data-price="6499" data-tco="14900"><span class="product-thumb"><i data-lucide="box"></i></span><span class="product-copy"><small>3D PRINTING</small><b>Form 4B</b><span>Prezzo demo <strong>€6.499</strong> · TCO €14.900</span></span><i data-lucide="chevron-right"></i></button>
   </div>
   <div class="tool-list">
     <button data-go="compare"><i data-lucide="scale"></i><span><b>Confronta due prodotti</b><small>Affianca prezzo, TCO e indice valore</small></span><i data-lucide="chevron-right"></i></button>
@@ -122,16 +124,24 @@
 </section>
 
 <section class="app-view" data-view="compare">
-  <div class="screen-head"><div><span class="screen-kicker">Confronto</span><h1>Due alternative, stesso contesto.</h1><p>Esempio dimostrativo: il prodotto definitivo userà dati verificati e fonti.</p></div></div>
-  <div class="compare-grid">
-    <div class="compare-card"><span>SCANNER</span><h3>Medit i700</h3><b>€7.900</b><small>Prezzo demo</small><hr><p><strong>TCO</strong> €10.300</p><p><strong>Indice valore</strong> 78/100</p></div>
-    <div class="compare-card"><span>SCANNER</span><h3>Aoralscan 3</h3><b>€6.200</b><small>Prezzo demo</small><hr><p><strong>TCO</strong> €8.100</p><p><strong>Indice valore</strong> 81/100</p></div>
-  </div>
+  <div class="screen-head"><div><span class="screen-kicker">Confronto</span><h1>Metti due alternative una accanto all'altra.</h1><p>Prezzo, TCO e indice valore nella stessa vista.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Seleziona due prodotti dalla schermata Prodotti. Se non ne scegli nessuno, vedi un esempio demo.</span></div>
+  <div class="compare-grid" id="compare-grid"></div>
+  <div class="decision-note"><i data-lucide="info"></i><p>Prezzi e score sono dimostrativi finché non colleghiamo fonti live e configurazioni reali.</p></div>
 </section>
 
 <section class="app-view" data-view="quotes">
-  <div class="screen-head"><div><span class="screen-kicker">Quote Analyzer</span><h1>Hai ricevuto un preventivo?</h1><p>IBEH lo scompone in prodotto, accessori, servizi, garanzia e condizioni per rendere comparabili offerte diverse.</p></div></div>
-  <label class="upload-box"><i data-lucide="upload-cloud"></i><b>Carica preventivo</b><small>PDF o immagine · in questa demo il file viene solo selezionato, non elaborato.</small><input id="quote-file" type="file" accept=".pdf,image/*"></label>
+  <div class="screen-head"><div><span class="screen-kicker">Quote Analyzer</span><h1>Capisci cosa stai pagando.</h1><p>Puoi caricare un file oppure simulare l'analisi inserendo manualmente le voci principali.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>1. Carichi un preventivo. 2. IBEH separa prodotto, accessori e servizi. 3. Confronta le voci con un riferimento e segnala cosa chiarire.</span></div>
+  <label class="upload-box"><i data-lucide="upload-cloud"></i><b>Carica preventivo</b><small>PDF o immagine · nella demo il file viene solo selezionato.</small><input id="quote-file" type="file" accept=".pdf,image/*"></label>
+  <form class="calc-form quote-manual" id="quote-form">
+    <label>Prodotto<select id="quote-product"><option value="7900">Medit i700 · riferimento demo €7.900</option><option value="6200">Aoralscan 3 · riferimento demo €6.200</option><option value="6499">Form 4B · riferimento demo €6.499</option></select></label>
+    <label>Prezzo offerto (€)<input id="quote-price" type="number" min="0" value="8900"></label>
+    <label>Accessori / servizi inclusi (€)<input id="quote-extras" type="number" min="0" value="500"></label>
+    <label>Garanzia (anni)<input id="quote-warranty" type="number" min="0" value="2"></label>
+    <button class="btn primary full" type="submit">Analizza preventivo demo</button>
+  </form>
+  <div class="calc-output" id="quote-analysis"></div>
   <div id="quote-result" class="workflow-preview">
     <div><span>1</span><b>Estrae le voci</b><small>Prodotto, accessori, installazione, formazione, assistenza</small></div>
     <div><span>2</span><b>Normalizza</b><small>Porta offerte diverse alla stessa configurazione</small></div>
@@ -141,7 +151,7 @@
 
 <section class="app-view" data-view="tco">
   <div class="screen-head"><div><span class="screen-kicker">TCO</span><h1>Quanto costa davvero?</h1><p>Il prezzo d'acquisto è solo una parte: aggiungi manutenzione e consumabili.</p></div></div>
-  <form class="calc-form" id="tco-form">
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Inserisci prezzo, anni, manutenzione e consumabili. IBEH ti restituisce il costo totale e il costo medio annuo.</span></div><form class="calc-form" id="tco-form">
     <label>Prezzo acquisto (€)<input id="tco-price" type="number" min="0" value="7900"></label>
     <label>Anni di utilizzo<input id="tco-years" type="number" min="1" value="5"></label>
     <label>Manutenzione annua (€)<input id="tco-maint" type="number" min="0" value="350"></label>
@@ -153,7 +163,7 @@
 
 <section class="app-view" data-view="rfq">
   <div class="screen-head"><div><span class="screen-kicker">RFQ / Fornitori</span><h1>Chiedi offerte comparabili.</h1><p>IBEH prepara una richiesta standard così ogni fornitore risponde sulla stessa configurazione.</p></div></div>
-  <div class="rfq-config">
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Definisci una configurazione standard, seleziona i fornitori e genera una richiesta uguale per tutti.</span></div><div class="rfq-config">
     <label>Prodotto<select id="rfq-product"><option>Medit i700</option><option>Aoralscan 3</option><option>Form 4B</option></select></label>
     <label>Cosa chiedere<textarea id="rfq-note">Prezzo completo, installazione, formazione, garanzia, manutenzione annuale e tempi di consegna.</textarea></label>
   </div>
@@ -168,7 +178,7 @@
 
 <section class="app-view" data-view="repair">
   <div class="screen-head"><div><span class="screen-kicker">Repair vs Replace</span><h1>Riparare o sostituire?</h1><p>Confronta il costo annualizzato delle due alternative.</p></div></div>
-  <form class="calc-form" id="repair-form">
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Confronta costo annualizzato di riparazione e sostituzione. Poi puoi passare a TCO o Money Radar.</span></div><form class="calc-form" id="repair-form">
     <label>Costo riparazione (€)<input id="repair-cost" type="number" min="0" value="1800"></label>
     <label>Vita residua dopo riparazione (anni)<input id="repair-years" type="number" min="1" value="2"></label>
     <label>Costo sostituzione (€)<input id="replace-cost" type="number" min="0" value="7900"></label>
@@ -180,55 +190,95 @@
 
 <section class="app-view" data-view="passport">
   <div class="screen-head"><div><span class="screen-kicker">Device Passport</span><h1>I device dello studio.</h1><p>Memorizza in locale una scheda base per acquisto, assistenza e prossimi alert.</p></div></div>
-  <form class="passport-form" id="passport-form"><input id="device-name" placeholder="Nome device" required><input id="device-year" type="number" placeholder="Anno acquisto" min="2000" max="2035" required><button class="btn primary" type="submit">Aggiungi</button></form>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Crea una scheda device con anno, stato e prossima manutenzione. IBEH userà questi dati per Safety Watch e Repair vs Replace.</span></div>
+<form class="passport-form" id="passport-form">
+  <input id="device-name" placeholder="Nome device" required>
+  <input id="device-year" type="number" placeholder="Anno acquisto" min="2000" max="2035" required>
+  <select id="device-status"><option>Operativo</option><option>Da controllare</option><option>In assistenza</option></select>
+  <input id="device-maint" type="date">
+  <button class="btn primary" type="submit">Aggiungi device</button>
+</form>
   <div class="device-list" id="device-list"></div>
 </section>
 
 <section class="app-view" data-view="radar">
   <div class="screen-head"><div><span class="screen-kicker">World Radar</span><h1>Cosa sta cambiando fuori dall'Italia?</h1><p>IBEH cerca segnali tecnologici e commerciali e li ordina per maturità.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Filtra per maturità, apri un trend e guarda come cambia il passaggio Global → Italia.</span></div>
+  <div class="filter-panel always radar-filter">
+    <button class="chip active" data-radar-filter="all">Tutti</button>
+    <button class="chip" data-radar-filter="scaling">Scaling</button>
+    <button class="chip" data-radar-filter="adoption">Adoption</button>
+  </div>
   <div class="stack-list">
-    <button class="data-card" data-detail="trend-ai"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">83</span></div><h3>AI imaging</h3><p>Segnale demo: adozione e integrazioni software in crescita.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
-    <button class="data-card" data-detail="trend-3d"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">82</span></div><h3>Chairside 3D printing</h3><p>Segnale demo: più vendor, hardware più rapido e materiali più maturi.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
+    <button class="data-card" data-detail="trend-ai" data-stage="scaling"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">83</span></div><h3>AI imaging</h3><p>Segnale demo: adozione e integrazioni software in crescita.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
+    <button class="data-card" data-detail="trend-3d" data-stage="scaling"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">82</span></div><h3>Chairside 3D printing</h3><p>Segnale demo: più vendor, hardware più rapido e materiali più maturi.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
   </div>
   <div class="tool-list"><button data-go="italy"><i data-lucide="map-pinned"></i><span><b>Vai a Italy Next</b><small>Capisci quanto questi trend sono vicini al mercato italiano</small></span><i data-lucide="chevron-right"></i></button></div>
 </section>
 
 <section class="app-view" data-view="italy">
-  <div class="screen-head"><div><span class="screen-kicker">Italy Next</span><h1>Quanto è vicino all'Italia?</h1><p>IBEH combina distanza dal mercato italiano, compatibilità, potenziale commerciale e readiness.</p></div></div>
-  <div class="metric-row"><div><b>82</b><span>3D printing</span></div><div><b>83</b><span>AI imaging</span></div><div><b>79</b><span>Remote monitoring</span></div></div>
-  <div class="decision-note"><i data-lucide="info"></i><p>I punteggi presenti qui sono dimostrativi: servono a mostrarti come funzionerà il modello, non sono dati live.</p></div>
+  <div class="screen-head"><div><span class="screen-kicker">Italy Next</span><h1>Quanto è vicino all'Italia?</h1><p>Simula il punteggio combinando readiness, compatibilità, potenziale commerciale e distanza dal mercato italiano.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Sposta i quattro indicatori e guarda come cambia lo score finale.</span></div>
+  <form class="slider-form" id="italy-form">
+    <label>Readiness <output id="italy-readiness-out">80</output><input id="italy-readiness" type="range" min="0" max="100" value="80"></label>
+    <label>Compatibilità <output id="italy-compat-out">85</output><input id="italy-compat" type="range" min="0" max="100" value="85"></label>
+    <label>Potenziale commerciale <output id="italy-commercial-out">78</output><input id="italy-commercial" type="range" min="0" max="100" value="78"></label>
+    <label>Gap Italia <output id="italy-gap-out">25</output><input id="italy-gap" type="range" min="0" max="100" value="25"></label>
+  </form>
+  <div class="score-result"><span>Italy Next Score demo</span><strong id="italy-score">80</strong><small>Più alto = più vicino a un'opportunità italiana.</small></div>
+  <div class="decision-note"><i data-lucide="info"></i><p>Il calcolo è dimostrativo. Il modello reale userà dati e segnali verificabili.</p></div>
 </section>
 
 <section class="app-view" data-view="safety">
-  <div class="screen-head"><div><span class="screen-kicker">Safety Watch</span><h1>Qualcosa riguarda i tuoi device?</h1><p>IBEH collegherà avvisi ufficiali e recall ai prodotti presenti nel Device Passport.</p></div></div>
+  <div class="screen-head"><div><span class="screen-kicker">Safety Watch</span><h1>Qualcosa riguarda i tuoi device?</h1><p>Incrocia gli alert con ciò che hai inserito nel Device Passport.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Aggiungi device al Passport e avvia il controllo demo. Il sistema ti mostra se trova corrispondenze con gli alert presenti nella demo.</span></div>
+  <button class="btn primary full" id="run-safety-check"><i data-lucide="shield-check"></i> Controlla i miei device</button>
+  <div class="calc-output" id="safety-result"></div>
   <button class="priority-row" data-detail="safety-imaging"><span class="row-icon danger"><i data-lucide="shield-alert"></i></span><span class="row-copy"><b>Categoria imaging</b><small>Alert demo: fonte live non ancora collegata.</small><em>DA VERIFICARE</em></span><i data-lucide="chevron-right"></i></button>
 </section>
 
 <section class="app-view" data-view="grants">
-  <div class="screen-head"><div><span class="screen-kicker">Money Radar</span><h1>Posso finanziare questo investimento?</h1><p>IBEH non mostra solo bandi: li abbina a ciò che stai pensando di comprare.</p></div></div>
-  <div class="match-card"><div><i data-lucide="scan-line"></i><span><small>PRODOTTO DEMO</small><b>Scanner intraorale</b></span></div><i data-lucide="arrow-down"></i><div><i data-lucide="landmark"></i><span><small>OPPORTUNITÀ DEMO</small><b>Attrezzature e digitalizzazione</b></span></div><div class="match-score"><span>Compatibilità demo</span><strong>74%</strong></div></div>
+  <div class="screen-head"><div><span class="screen-kicker">Money Radar</span><h1>Posso finanziare questo investimento?</h1><p>Inserisci cosa vuoi comprare e quanto vuoi investire: la demo restituisce un matching simulato.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Definisci categoria e budget. IBEH valuta la compatibilità con opportunità presenti nel radar.</span></div>
+  <form class="calc-form" id="grant-form">
+    <label>Categoria<select id="grant-category"><option value="scanner">Scanner intraorale</option><option value="3d">3D printing</option><option value="software">Software gestionale</option><option value="training">Formazione</option></select></label>
+    <label>Investimento previsto (€)<input id="grant-amount" type="number" min="0" value="8000"></label>
+    <button class="btn primary full" type="submit">Trova matching demo</button>
+  </form>
+  <div class="calc-output" id="grant-output"></div>
 </section>
 
 <section class="app-view" data-view="events">
-  <div class="screen-head"><div><span class="screen-kicker">Eventi & ECM</span><h1>Dove approfondisco?</h1><p>Fiere, formazione e crediti ECM filtrati per specializzazione e tecnologia. Il feed live non è ancora collegato.</p></div></div>
-  <div class="empty-inline"><i data-lucide="calendar-search"></i><b>Feed eventi da collegare</b><span>Non inseriamo date finte nella demo.</span></div>
+  <div class="screen-head"><div><span class="screen-kicker">Eventi & ECM</span><h1>Dove approfondisco?</h1><p>Filtra una piccola agenda demo per capire come funzionerà il modulo quando collegheremo feed reali.</p></div></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Filtra per tema e mostra solo gli eventi rilevanti per la tua esigenza.</span></div>
+  <div class="filter-panel always">
+    <button class="chip active" data-event-filter="all">Tutti</button>
+    <button class="chip" data-event-filter="digital">Digitale</button>
+    <button class="chip" data-event-filter="implant">Implantologia</button>
+    <button class="chip" data-event-filter="management">Gestione</button>
+  </div>
+  <div class="event-list">
+    <article class="event-card" data-event-category="digital"><span class="label">DEMO</span><b>Digital Dentistry Forum</b><small>Scanner · CAD/CAM · AI imaging</small><button data-save-title="Digital Dentistry Forum" class="event-save"><i data-lucide="bookmark"></i> Salva</button></article>
+    <article class="event-card" data-event-category="implant"><span class="label">DEMO</span><b>Implantology Update</b><small>Workflow chirurgico e protesico</small><button data-save-title="Implantology Update" class="event-save"><i data-lucide="bookmark"></i> Salva</button></article>
+    <article class="event-card" data-event-category="management"><span class="label">DEMO</span><b>Dental Practice Management</b><small>Controllo costi e organizzazione studio</small><button data-save-title="Dental Practice Management" class="event-save"><i data-lucide="bookmark"></i> Salva</button></article>
+  </div>
 </section>
 
 <section class="app-view" data-view="benchmark">
   <div class="screen-head"><div><span class="screen-kicker">Practice Benchmark</span><h1>Come è strutturato il mio studio?</h1><p>Per ora calcoliamo indicatori interni, senza inventare benchmark di mercato.</p></div></div>
-  <form class="calc-form" id="benchmark-form"><label>Riuni operativi<input id="bench-chairs" type="number" min="1" value="3"></label><label>Spesa tecnologia annua (€)<input id="bench-spend" type="number" min="0" value="18000"></label><label>Investimenti programmati (€)<input id="bench-plan" type="number" min="0" value="25000"></label><button class="btn primary full" type="submit">Calcola indicatori</button></form>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Inserisci dimensione e spesa dello studio. Per ora calcoliamo solo indicatori interni, senza confronti inventati con il mercato.</span></div><form class="calc-form" id="benchmark-form"><label>Riuni operativi<input id="bench-chairs" type="number" min="1" value="3"></label><label>Spesa tecnologia annua (€)<input id="bench-spend" type="number" min="0" value="18000"></label><label>Investimenti programmati (€)<input id="bench-plan" type="number" min="0" value="25000"></label><button class="btn primary full" type="submit">Calcola indicatori</button></form>
   <div class="calc-output" id="benchmark-output"></div>
 </section>
 
 <section class="app-view" data-view="spend">
   <div class="screen-head"><div><span class="screen-kicker">Spend Score</span><h1>Dove sto spendendo?</h1><p>Leggi il mix tra hardware, software e manutenzione.</p></div></div>
-  <form class="calc-form" id="spend-form"><label>Hardware (€)<input id="spend-hw" type="number" min="0" value="12000"></label><label>Software (€)<input id="spend-sw" type="number" min="0" value="6000"></label><label>Assistenza / manutenzione (€)<input id="spend-maint" type="number" min="0" value="4500"></label><button class="btn primary full" type="submit">Analizza mix</button></form>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Inserisci quanto spendi in hardware, software e assistenza. IBEH restituisce il mix percentuale.</span></div><form class="calc-form" id="spend-form"><label>Hardware (€)<input id="spend-hw" type="number" min="0" value="12000"></label><label>Software (€)<input id="spend-sw" type="number" min="0" value="6000"></label><label>Assistenza / manutenzione (€)<input id="spend-maint" type="number" min="0" value="4500"></label><button class="btn primary full" type="submit">Analizza mix</button></form>
   <div class="calc-output" id="spend-output"></div>
 </section>
 
 <section class="app-view" data-view="ask">
   <div class="screen-head"><div><span class="screen-kicker">Ask IBEH</span><h1>Dimmi cosa devi decidere.</h1><p>La demo capisce il tipo di problema e ti porta nel modulo corretto.</p></div></div>
-  <div class="ask-suggestions"><button data-question="devo comprare uno scanner">Devo comprare uno scanner</button><button data-question="ho ricevuto un preventivo">Ho un preventivo</button><button data-question="riparo o sostituisco">Riparo o sostituisco?</button></div>
+  <div class="module-intro"><b>Cosa puoi fare qui</b><span>Descrivi il problema in parole normali. IBEH ti indirizza al modulo corretto e usa i dati demo disponibili.</span></div><div class="ask-suggestions"><button data-question="devo comprare uno scanner">Devo comprare uno scanner</button><button data-question="ho ricevuto un preventivo">Ho un preventivo</button><button data-question="riparo o sostituisco">Riparo o sostituisco?</button></div>
   <div class="chat-stream" id="chat-stream"><div class="chat-bubble system">Scrivi una situazione concreta. Es.: “ho ricevuto un preventivo per uno scanner”.</div></div>
   <form id="ask-form" class="ask-compose"><input id="ask-input" placeholder="Cosa devi decidere?"><button type="submit"><i data-lucide="arrow-up"></i></button></form>
 </section>
