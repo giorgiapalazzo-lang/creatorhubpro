@@ -70,6 +70,22 @@
     <button class="decision-card" data-go="radar"><span class="quick-icon"><i data-lucide="radar"></i></span><span><b>Cosa sta cambiando?</b><small>Trend globali, Italia, safety, eventi e opportunità.</small></span><i data-lucide="chevron-right"></i></button>
   </div>
 
+  
+  <div class="home-snapshot">
+    <div class="snapshot-head"><div><span class="screen-kicker">Demo snapshot</span><h2>Il tuo Decision Board</h2></div><span class="label green">AGGIORNATO</span></div>
+    <div class="snapshot-kpis"><div><b>24</b><span>prodotti osservati</span></div><div><b>7</b><span>trend attivi</span></div><div><b>4</b><span>opportunità</span></div><div><b>2</b><span>alert</span></div></div>
+    <div class="snapshot-board">
+      <button data-go="products"><span class="rank">01</span><span><b>Scanner intraorale</b><small>3 alternative sotto €10k · demo</small></span><strong>84</strong></button>
+      <button data-go="radar"><span class="rank">02</span><span><b>Chairside 3D printing</b><small>Scaling · readiness demo</small></span><strong>82</strong></button>
+      <button data-go="grants"><span class="rank">03</span><span><b>Digitalizzazione studio</b><small>Money Radar · match demo</small></span><strong>74%</strong></button>
+      <button data-go="safety"><span class="rank">04</span><span><b>Imaging safety signal</b><small>Verifica richiesta · demo</small></span><strong>!</strong></button>
+    </div>
+  </div>
+  <div class="human-context-card">
+    <img src="../assets/images/dental-team.svg" alt="Team odontoiatrico in studio">
+    <div><span class="screen-kicker">Human context</span><b>IBEH non sostituisce la decisione del dentista.</b><small>Riduce il tempo necessario per capire cosa confrontare, cosa verificare e dove approfondire.</small></div>
+  </div>
+
   <button class="orientation-card" data-go="guide">
     <span class="orientation-icon"><i data-lucide="route"></i></span>
     <span><b>Come funziona IBEH</b><small>Il percorso completo spiegato in 60 secondi</small></span>
@@ -116,6 +132,9 @@
     <button class="product-row" data-product="Medit i700" data-selectable="true" data-price="7900" data-tco="10300"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Medit i700</b><span>Prezzo demo <strong>€7.900</strong> · TCO €10.300</span></span><i data-lucide="chevron-right"></i></button>
     <button class="product-row" data-product="Aoralscan 3" data-selectable="true" data-price="6200" data-tco="8100"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Aoralscan 3</b><span>Prezzo demo <strong>€6.200</strong> · TCO €8.100</span></span><i data-lucide="chevron-right"></i></button>
     <button class="product-row" data-product="Form 4B" data-selectable="true" data-price="6499" data-tco="14900"><span class="product-thumb"><i data-lucide="box"></i></span><span class="product-copy"><small>3D PRINTING</small><b>Form 4B</b><span>Prezzo demo <strong>€6.499</strong> · TCO €14.900</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="TRIOS 5" data-selectable="true" data-price="11900" data-tco="15400"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>TRIOS 5</b><span>Prezzo demo <strong>€11.900</strong> · TCO €15.400</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="Primescan 2" data-selectable="true" data-price="13900" data-tco="17600"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Primescan 2</b><span>Prezzo demo <strong>€13.900</strong> · TCO €17.600</span></span><i data-lucide="chevron-right"></i></button>
+    <button class="product-row" data-product="CBCT Pro Demo" data-selectable="true" data-price="48500" data-tco="61200"><span class="product-thumb"><i data-lucide="circle-dot"></i></span><span class="product-copy"><small>CBCT</small><b>CBCT Pro Demo</b><span>Prezzo demo <strong>€48.500</strong> · TCO €61.200</span></span><i data-lucide="chevron-right"></i></button>
   </div>
   <div class="tool-list">
     <button data-go="compare"><i data-lucide="scale"></i><span><b>Confronta due prodotti</b><small>Affianca prezzo, TCO e indice valore</small></span><i data-lucide="chevron-right"></i></button>
@@ -234,7 +253,11 @@
   <div class="module-intro"><b>Cosa puoi fare qui</b><span>Aggiungi device al Passport e avvia il controllo demo. Il sistema ti mostra se trova corrispondenze con gli alert presenti nella demo.</span></div>
   <button class="btn primary full" id="run-safety-check"><i data-lucide="shield-check"></i> Controlla i miei device</button>
   <div class="calc-output" id="safety-result"></div>
-  <button class="priority-row" data-detail="safety-imaging"><span class="row-icon danger"><i data-lucide="shield-alert"></i></span><span class="row-copy"><b>Categoria imaging</b><small>Alert demo: fonte live non ancora collegata.</small><em>DA VERIFICARE</em></span><i data-lucide="chevron-right"></i></button>
+  <div class="safety-list">
+    <button class="priority-row" data-detail="safety-imaging"><span class="row-icon danger"><i data-lucide="shield-alert"></i></span><span class="row-copy"><b>Categoria imaging</b><small>Alert demo · priorità alta · fonte live non collegata</small><em>DA VERIFICARE</em></span><i data-lucide="chevron-right"></i></button>
+    <button class="priority-row"><span class="row-icon warm"><i data-lucide="triangle-alert"></i></span><span class="row-copy"><b>Consumabili sterilizzazione</b><small>Segnale demo · controllo documentale consigliato</small><em>MONITOR</em></span><i data-lucide="chevron-right"></i></button>
+    <button class="priority-row"><span class="row-icon"><i data-lucide="badge-check"></i></span><span class="row-copy"><b>Scanner demo studio</b><small>Nessuna corrispondenza critica nel dataset demo</small><em>OK</em></span><i data-lucide="chevron-right"></i></button>
+  </div>
 </section>
 
 <section class="app-view" data-view="grants">

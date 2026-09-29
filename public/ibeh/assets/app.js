@@ -5,7 +5,10 @@ var compareSelected=[];
 var productCatalog=[
  {name:"Medit i700",price:7900,tco:10300,value:78},
  {name:"Aoralscan 3",price:6200,tco:8100,value:81},
- {name:"Form 4B",price:6499,tco:14900,value:74}
+ {name:"Form 4B",price:6499,tco:14900,value:74},
+ {name:"TRIOS 5",price:11900,tco:15400,value:80},
+ {name:"Primescan 2",price:13900,tco:17600,value:77},
+ {name:"CBCT Pro Demo",price:48500,tco:61200,value:73}
 ];
 var devices=JSON.parse(localStorage.getItem("ibeh-devices")||"[]");
 
