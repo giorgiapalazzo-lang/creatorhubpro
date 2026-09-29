@@ -1,134 +1,106 @@
 (function(){
-  var historyStack=["today"];
-  var current="today";
-  var saved=JSON.parse(localStorage.getItem("ibeh-saved")||"[]");
+var historyStack=["today"],current="today";
+var saved=JSON.parse(localStorage.getItem("ibeh-saved")||"[]");
+var devices=JSON.parse(localStorage.getItem("ibeh-devices")||"[]");
 
-  function icons(){ if(window.lucide) window.lucide.createIcons({attrs:{"stroke-width":2}}); }
-  function setActive(view){
-    document.querySelectorAll("[data-go]").forEach(function(el){
-      el.classList.toggle("active",el.getAttribute("data-go")===view);
-    });
-  }
-  function show(view,push){
-    var target=document.querySelector('[data-view="'+view+'"]');
-    if(!target) view="today";
-    document.querySelectorAll(".app-view").forEach(function(v){v.classList.remove("active")});
-    target=document.querySelector('[data-view="'+view+'"]');
-    if(target) target.classList.add("active");
-    current=view;
-    setActive(view);
-    var back=document.getElementById("app-back");
-    if(back) back.classList.toggle("show",view==="detail");
-    if(push!==false && historyStack[historyStack.length-1]!==view) historyStack.push(view);
-    window.scrollTo({top:0,behavior:"instant"});
-    var u=new URL(window.location.href);
-    if(view==="today") u.searchParams.delete("view"); else u.searchParams.set("view",view);
-    history.replaceState({view:view},"",u);
-    if(view==="saved") renderSaved();
-    icons();
-  }
-  function goBack(){
-    historyStack.pop();
-    show(historyStack.pop()||"today");
-  }
-  function detail(title,kicker,body,meta){
-    document.getElementById("detail-content").innerHTML=
-      '<div class="detail-head"><span class="screen-kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+body+'</p></div>'+
-      '<div class="detail-facts">'+
-      '<div><span>Stato</span><b>'+(meta&&meta.status||"Da verificare")+'</b></div>'+
-      '<div><span>Fonte</span><b>'+(meta&&meta.source||"Demo / fonte da collegare")+'</b></div>'+
-      '<div><span>Azione</span><b>'+(meta&&meta.action||"Apri il contesto prima di decidere")+'</b></div>'+
-      '</div>'+
-      '<button class="btn primary full detail-save" data-save-title="'+title.replace(/"/g,"&quot;")+'"><i data-lucide="bookmark"></i> Salva</button>';
-    show("detail");
-    icons();
-  }
-  var details={
-    "safety-imaging":["Safety signal su imaging","Safety Watch","Segnale demo: serve verificare modello, lotto e azione richiesta sulla fonte ufficiale.",{status:"Priorità alta",action:"Verifica i device interessati"}],
-    "grant-equipment":["Attrezzature e digitalizzazione","Money Radar","Compatibilità preliminare positiva per alcune categorie di investimento. I requisiti reali vanno verificati prima di agire.",{status:"Da verificare",action:"Controlla requisiti e scadenza"}],
-    "grant-training":["Formazione e competenze digitali","Money Radar","Possibile pertinenza per percorsi di aggiornamento del team.",{status:"In valutazione"}],
-    "trend-3d":["Chairside 3D printing","World Radar","Il segnale demo combina crescita vendor, velocità hardware e maturità dei materiali.",{status:"Scaling",action:"Monitora prima di investire"}],
-    "trend-ai":["AI imaging","World Radar","Adozione e integrazioni software sono in crescita nel dataset demo.",{status:"Scaling"}],
-    "trend-remote":["Remote monitoring","World Radar","Segnale interessante per ortodonzia e follow-up; readiness demo 79/100.",{status:"Adoption"}],
-    "price-scanners":["Scanner: fascia value","Buy Smart","I prezzi demo mostrano una fascia value più competitiva. Confronta sempre configurazione e TCO.",{status:"Mercato in movimento",action:"Confronta TCO"}]
-  };
-
-  document.addEventListener("click",function(e){
-    var go=e.target.closest("[data-go]");
-    if(go){e.preventDefault();show(go.getAttribute("data-go"));return}
-    var d=e.target.closest("[data-detail]");
-    if(d){var x=details[d.getAttribute("data-detail")];if(x)detail(x[0],x[1],x[2],x[3]);return}
-    var p=e.target.closest("[data-product]");
-    if(p){
-      detail(p.dataset.product,"Prodotto",
-        "Prezzo osservato "+p.dataset.price+" · TCO demo "+p.dataset.tco+". I valori sono illustrativi finché non colleghiamo le fonti reali.",
-        {status:"Snapshot demo",action:"Confronta configurazione, assistenza e TCO"});
-      return;
-    }
-    var save=e.target.closest(".detail-save");
-    if(save){
-      var t=save.getAttribute("data-save-title");
-      if(!saved.includes(t)) saved.push(t);
-      localStorage.setItem("ibeh-saved",JSON.stringify(saved));
-      save.innerHTML='<i data-lucide="check"></i> Salvato'; icons(); return;
-    }
-    var chip=e.target.closest("[data-filter]");
-    if(chip){
-      document.querySelectorAll("[data-filter]").forEach(function(c){c.classList.remove("active")});
-      chip.classList.add("active");
-      var f=chip.dataset.filter;
-      document.querySelectorAll(".priority-row").forEach(function(r){r.hidden=f!=="all"&&r.dataset.kind!==f});
-      return;
-    }
-    var pf=e.target.closest("[data-product-filter]");
-    if(pf){
-      document.querySelectorAll("[data-product-filter]").forEach(function(c){c.classList.remove("active")});
-      pf.classList.add("active"); filterProducts(); return;
-    }
-    var q=e.target.closest("[data-question]");
-    if(q){document.getElementById("ask-input").value=q.dataset.question;answer(q.dataset.question);return}
-  });
-
-  document.getElementById("app-back").addEventListener("click",goBack);
-  document.getElementById("filter-toggle").addEventListener("click",function(){
-    var p=document.getElementById("filter-panel"); p.hidden=!p.hidden; icons();
-  });
-  document.getElementById("product-search").addEventListener("input",filterProducts);
-  document.getElementById("global-search").addEventListener("keydown",function(e){
-    if(e.key==="Enter"){document.getElementById("product-search").value=this.value;show("products");filterProducts()}
-  });
-  function filterProducts(){
-    var q=(document.getElementById("product-search").value||"").toLowerCase();
-    var active=document.querySelector("[data-product-filter].active");
-    var cat=active?active.dataset.productFilter:"all";
-    document.querySelectorAll(".product-row").forEach(function(r){
-      var okCat=cat==="all"||r.dataset.category===cat;
-      var okQ=!q||r.innerText.toLowerCase().includes(q);
-      r.hidden=!(okCat&&okQ);
-    });
-  }
-  function renderSaved(){
-    var box=document.getElementById("saved-list");
-    if(!saved.length){box.innerHTML='<div class="empty-inline"><i data-lucide="bookmark"></i><b>Nessun elemento salvato</b><span>Apri un dettaglio e tocca Salva.</span></div>'}
-    else box.innerHTML=saved.map(function(t){return '<div class="saved-row"><i data-lucide="bookmark-check"></i><span>'+t+'</span></div>'}).join("");
-    icons();
-  }
-  function answer(q){
-    q=(q||"").toLowerCase().trim(); if(!q)return;
-    var out="Nella demo non ho trovato una corrispondenza precisa.";
-    if(q.includes("scanner")) out="Nel dataset demo: Aoralscan 3 (€6.200) e Medit i700 (€7.900) sono sotto €10.000. Il TCO illustrativo è rispettivamente €8.100 e €10.300.";
-    else if(q.includes("bando")||q.includes("attrezz")) out="C'è un'opportunità demo su attrezzature e digitalizzazione. La compatibilità è preliminare: servono verifica requisiti e scadenza.";
-    else if(q.includes("3d")||q.includes("printing")) out="Il chairside 3D printing è classificato come 'Scaling' con readiness demo 82/100.";
-    var stream=document.getElementById("chat-stream");
-    stream.insertAdjacentHTML("beforeend",'<div class="chat-bubble user">'+escapeHtml(q)+'</div><div class="chat-bubble system">'+out+'</div>');
-    stream.scrollTop=stream.scrollHeight;
-  }
-  function escapeHtml(s){return s.replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]})}
-  document.getElementById("ask-form").addEventListener("submit",function(e){
-    e.preventDefault(); var i=document.getElementById("ask-input"); answer(i.value); i.value="";
-  });
-
-  var initial=new URLSearchParams(location.search).get("view")||"today";
-  show(initial,false); historyStack=[initial];
+function icons(){if(window.lucide)window.lucide.createIcons({attrs:{"stroke-width":2}})}
+function money(n){return new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(Number(n)||0)}
+function show(view,push){
+  if(!document.querySelector('[data-view="'+view+'"]'))view="today";
+  document.querySelectorAll(".app-view").forEach(function(v){v.classList.remove("active")});
+  document.querySelector('[data-view="'+view+'"]').classList.add("active");
+  document.querySelectorAll("[data-go]").forEach(function(el){el.classList.toggle("active",el.dataset.go===view)});
+  current=view;
+  var back=document.getElementById("app-back");
+  if(back)back.classList.toggle("show",view==="detail");
+  if(push!==false&&historyStack[historyStack.length-1]!==view)historyStack.push(view);
+  var u=new URL(location.href);if(view==="today")u.searchParams.delete("view");else u.searchParams.set("view",view);history.replaceState({view:view},"",u);
+  scrollTo({top:0,behavior:"instant"});
+  if(view==="saved")renderSaved();
+  if(view==="passport")renderDevices();
   icons();
+}
+function goBack(){historyStack.pop();show(historyStack.pop()||"today")}
+function detail(title,kicker,body,meta){
+  meta=meta||{};
+  document.getElementById("detail-content").innerHTML='<div class="detail-head"><span class="screen-kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+body+'</p></div><div class="detail-facts"><div><span>Stato</span><b>'+(meta.status||"Demo")+'</b></div><div><span>Fonte</span><b>'+(meta.source||"Da collegare")+'</b></div><div><span>Azione</span><b>'+(meta.action||"Approfondisci prima di decidere")+'</b></div></div><button class="btn primary full detail-save" data-save-title="'+title.replace(/"/g,"&quot;")+'"><i data-lucide="bookmark"></i> Salva</button>';
+  show("detail");icons();
+}
+var details={
+"trend-ai":["AI imaging","World Radar","Segnale demo: adozione e integrazioni software in crescita. Il sistema reale mostrerà fonti e data osservazione.",{status:"Scaling · demo",action:"Valuta maturità e compatibilità Italia"}],
+"trend-3d":["Chairside 3D printing","World Radar","Segnale demo costruito su crescita vendor, velocità hardware e maturità dei materiali.",{status:"Scaling · demo",action:"Monitora prezzo e casi d'uso"}],
+"safety-imaging":["Categoria imaging","Safety Watch","Alert dimostrativo. Il modulo reale mostrerà fonte ufficiale, modello, lotto e azione richiesta.",{status:"Fonte live non collegata",action:"Verifica fonte ufficiale"}]
+};
+
+document.addEventListener("click",function(e){
+  var g=e.target.closest("[data-go]");if(g){e.preventDefault();show(g.dataset.go);return}
+  var d=e.target.closest("[data-detail]");if(d&&details[d.dataset.detail]){var x=details[d.dataset.detail];detail(x[0],x[1],x[2],x[3]);return}
+  var p=e.target.closest("[data-product]");if(p){detail(p.dataset.product,"Prodotto","Prezzo demo "+money(p.dataset.price)+" · TCO demo "+money(p.dataset.tco)+". Nel prodotto finale ogni prezzo avrà fonte, data e configurazione.",{status:"Snapshot demo",action:"Confronta, calcola TCO o apri RFQ"});return}
+  var s=e.target.closest(".detail-save");if(s){var t=s.dataset.saveTitle;if(!saved.includes(t))saved.push(t);localStorage.setItem("ibeh-saved",JSON.stringify(saved));s.innerHTML='<i data-lucide="check"></i> Salvato';icons();return}
+  var q=e.target.closest("[data-question]");if(q){answer(q.dataset.question);return}
+});
+document.getElementById("app-back").addEventListener("click",goBack);
+
+document.getElementById("global-search").addEventListener("keydown",function(e){
+ if(e.key!=="Enter")return;var q=this.value.toLowerCase();
+ if(q.includes("prevent")||q.includes("offerta"))show("quotes");
+ else if(q.includes("ripar")||q.includes("sostitu"))show("repair");
+ else if(q.includes("bando")||q.includes("incent"))show("grants");
+ else if(q.includes("trend")||q.includes("mercato")||q.includes("italia"))show("radar");
+ else if(q.includes("scanner")||q.includes("comprare")||q.includes("prodot"))show("products");
+ else {show("ask");document.getElementById("ask-input").value=this.value;answer(this.value)}
+});
+document.getElementById("product-search").addEventListener("input",function(){var q=this.value.toLowerCase();document.querySelectorAll(".product-row").forEach(function(r){r.hidden=!r.innerText.toLowerCase().includes(q)})});
+
+document.getElementById("quote-file").addEventListener("change",function(){
+ if(!this.files.length)return;
+ document.getElementById("quote-result").insertAdjacentHTML("afterbegin",'<div class="upload-note"><i data-lucide="file-check-2"></i><span><b>'+escapeHtml(this.files[0].name)+'</b><small>File selezionato. L’analisi reale non è ancora collegata.</small></span></div>');
+ icons();
+});
+document.getElementById("tco-form").addEventListener("submit",function(e){
+ e.preventDefault();var p=+document.getElementById("tco-price").value,y=+document.getElementById("tco-years").value,m=+document.getElementById("tco-maint").value,c=+document.getElementById("tco-cons").value,total=p+y*(m+c);
+ document.getElementById("tco-output").innerHTML='<span>TCO '+y+' anni</span><strong>'+money(total)+'</strong><small>'+money(total/y)+' / anno</small>';
+});
+document.getElementById("rfq-preview").addEventListener("click",function(){
+ var suppliers=[...document.querySelectorAll(".supplier:checked")].map(function(x){return x.value});
+ var prod=document.getElementById("rfq-product").value;
+ document.getElementById("rfq-output").innerHTML=suppliers.length?'<span>RFQ pronta</span><strong>'+prod+'</strong><small>'+suppliers.length+' fornitor'+(suppliers.length===1?'e':'i')+' selezionati. Invio non attivo nella demo.</small>':'<span>Seleziona almeno un fornitore</span>';
+});
+document.getElementById("repair-form").addEventListener("submit",function(e){
+ e.preventDefault();var r=+document.getElementById("repair-cost").value,ry=+document.getElementById("repair-years").value,n=+document.getElementById("replace-cost").value,ny=+document.getElementById("replace-years").value;
+ var ra=r/ry,na=n/ny,choice=ra<na?"Riparazione economicamente più leggera":"Sostituzione economicamente più leggera";
+ document.getElementById("repair-output").innerHTML='<span>'+choice+'</span><strong>'+money(Math.min(ra,na))+' / anno</strong><small>Riparazione '+money(ra)+'/anno · sostituzione '+money(na)+'/anno. Non include rischio e downtime.</small>';
+});
+document.getElementById("passport-form").addEventListener("submit",function(e){
+ e.preventDefault();var name=document.getElementById("device-name").value.trim(),year=document.getElementById("device-year").value;if(!name||!year)return;
+ devices.push({name:name,year:year});localStorage.setItem("ibeh-devices",JSON.stringify(devices));this.reset();renderDevices();
+});
+function renderDevices(){
+ var box=document.getElementById("device-list");if(!devices.length){box.innerHTML='<div class="empty-inline"><i data-lucide="badge-check"></i><b>Nessun device inserito</b><span>Aggiungi il primo device dello studio.</span></div>'}
+ else box.innerHTML=devices.map(function(d){return '<div class="saved-row"><i data-lucide="stethoscope"></i><span>'+escapeHtml(d.name)+' · '+escapeHtml(String(d.year))+'</span></div>'}).join("");
+ icons();
+}
+document.getElementById("benchmark-form").addEventListener("submit",function(e){
+ e.preventDefault();var chairs=+document.getElementById("bench-chairs").value,spend=+document.getElementById("bench-spend").value,plan=+document.getElementById("bench-plan").value;
+ document.getElementById("benchmark-output").innerHTML='<span>Indicatori interni</span><strong>'+money(spend/chairs)+' / riunito</strong><small>Investimento programmato '+money(plan)+'. Nessun confronto di mercato finché non colleghiamo benchmark reali.</small>';
+});
+document.getElementById("spend-form").addEventListener("submit",function(e){
+ e.preventDefault();var hw=+document.getElementById("spend-hw").value,sw=+document.getElementById("spend-sw").value,m=+document.getElementById("spend-maint").value,t=hw+sw+m;
+ document.getElementById("spend-output").innerHTML='<span>Mix di spesa</span><strong>'+money(t)+'</strong><small>Hardware '+pct(hw,t)+' · Software '+pct(sw,t)+' · Assistenza '+pct(m,t)+'</small>';
+});
+function pct(v,t){return t?Math.round(v/t*100)+"%":"0%"}
+
+function answer(q){
+ q=(q||"").trim();if(!q)return;var l=q.toLowerCase(),out="Posso instradarti verso il modulo giusto.";
+ if(l.includes("scanner")||l.includes("comprare"))out='Per un acquisto partirei da <b>Buy Smart</b>: confronta prodotti, poi TCO, preventivo e RFQ.';
+ else if(l.includes("prevent"))out='Apri <b>Quote Analyzer</b>: serve a scomporre il preventivo e rendere comparabili le voci.';
+ else if(l.includes("ripar")||l.includes("sostitu"))out='Apri <b>Repair vs Replace</b>: confronta il costo annualizzato delle due opzioni.';
+ else if(l.includes("trend")||l.includes("italia")||l.includes("mercato"))out='Apri <b>World Radar</b> e poi <b>Italy Next</b> per vedere il passaggio globale → Italia.';
+ var stream=document.getElementById("chat-stream");stream.insertAdjacentHTML("beforeend",'<div class="chat-bubble user">'+escapeHtml(q)+'</div><div class="chat-bubble system">'+out+'</div>');stream.scrollTop=stream.scrollHeight;
+}
+document.getElementById("ask-form").addEventListener("submit",function(e){e.preventDefault();var i=document.getElementById("ask-input");answer(i.value);i.value=""});
+function renderSaved(){var box=document.getElementById("saved-list");box.innerHTML=saved.length?saved.map(function(t){return '<div class="saved-row"><i data-lucide="bookmark-check"></i><span>'+escapeHtml(t)+'</span></div>'}).join(""):'<div class="empty-inline"><i data-lucide="bookmark"></i><b>Nessun elemento salvato</b><span>Apri un dettaglio e tocca Salva.</span></div>';icons()}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]})}
+
+var initial=new URLSearchParams(location.search).get("view")||"today";show(initial,false);historyStack=[initial];icons();
 })();
