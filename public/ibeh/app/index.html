@@ -1,24 +1,178 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><title>IBEH App</title><link rel="stylesheet" href="../assets/styles.css"></head><body>
-<header class="mobile-app-header"><a class="logo" href="../"><span class="mark"></span>IBEH</a><div class="header-actions"><a class="icon-btn" href="#ask" aria-label="Ask IBEH">⌕</a><button id="logout-btn" class="icon-btn" type="button" aria-label="Account">Accedi</button></div></header>
-<div class="app-shell"><aside class="app-side"><div class="app-brand"><a class="logo" href="../"><span class="mark"></span>IBEH</a></div><nav class="app-nav"><a class="active" href="#today">⌂ Oggi</a><a href="#products">◫ Prodotti</a><a href="#products">⇄ Confronta</a><a href="#">▤ Preventivi</a><div class="group">Intelligence</div><a href="#radar">↗ World Radar</a><a href="#money">€ Bandi</a><a href="#">◷ Eventi & ECM</a><a href="#">! Safety</a><div class="group">Workspace</div><a href="#">★ Salvati</a><a href="#ask">⌕ Ask IBEH</a><a href="#">⚙ Impostazioni</a></nav></aside>
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>IBEH App</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="ibeh-app-v2">
+<header class="mobile-app-header">
+  <button class="app-back" id="app-back" type="button" aria-label="Indietro"><i data-lucide="chevron-left"></i></button>
+  <a class="logo" href="../"><span class="mark"></span>IBEH</a>
+  <div class="header-actions">
+    <button class="icon-btn" type="button" data-go="ask" aria-label="Ask IBEH"><i data-lucide="sparkles"></i></button>
+    <button id="logout-btn" class="account-btn" type="button">Accedi</button>
+  </div>
+</header>
+
+<div class="app-shell">
+<aside class="app-side">
+  <div class="app-brand"><a class="logo" href="../"><span class="mark"></span>IBEH</a></div>
+  <nav class="app-nav" aria-label="Navigazione principale">
+    <button class="active" data-go="today"><i data-lucide="house"></i>Oggi</button>
+    <button data-go="products"><i data-lucide="package-search"></i>Prodotti</button>
+    <button data-go="compare"><i data-lucide="scale"></i>Confronta</button>
+    <button data-go="quotes"><i data-lucide="file-text"></i>Preventivi</button>
+    <div class="group">Intelligence</div>
+    <button data-go="radar"><i data-lucide="radar"></i>World Radar</button>
+    <button data-go="grants"><i data-lucide="landmark"></i>Bandi</button>
+    <button data-go="events"><i data-lucide="calendar-days"></i>Eventi & ECM</button>
+    <button data-go="safety"><i data-lucide="shield-alert"></i>Safety</button>
+    <div class="group">Workspace</div>
+    <button data-go="saved"><i data-lucide="bookmark"></i>Salvati</button>
+    <button data-go="ask"><i data-lucide="sparkles"></i>Ask IBEH</button>
+    <button data-go="settings"><i data-lucide="settings"></i>Impostazioni</button>
+  </nav>
+</aside>
+
 <main class="app-main">
-<section id="today"><div class="app-top"><div class="app-title-row"><div><h2>Buongiorno.</h2><div class="muted small">Quattro cose meritano attenzione oggi.</div></div><div class="profile"><span id="session-mode" class="label">DEMO</span><span id="user-name" class="small">Demo studio</span></div></div><div class="app-search"><input placeholder="Cerca prodotto, bando, tecnologia..."></div></div>
-<div class="app-clinical-strip"><img src="../assets/images/dentist-analytics.svg" alt="Dentista che consulta dati digitali"><div class="overlay"><b>Il tuo radar, senza rumore.</b><span>Fonti, segnali e opportunità ordinati per impatto.</span></div></div>
-<div class="app-kpis"><div class="app-card"><div class="muted small">Alert prioritari</div><div class="value">3</div><span class="label red">+1 oggi</span></div><div class="app-card"><div class="muted small">Prodotti seguiti</div><div class="value">12</div><span class="label green">2 cambi prezzo</span></div><div class="app-card" id="money"><div class="muted small">Bandi compatibili</div><div class="value">4</div><span class="label orange">1 in scadenza</span></div><div class="app-card"><div class="muted small">Italy Next</div><div class="value">7</div><span class="label">trend attivi</span></div></div></section>
+  <section class="app-view active" data-view="today">
+    <div class="screen-head">
+      <div>
+        <span class="screen-kicker">Oggi</span>
+        <h1>Buongiorno.</h1>
+        <p>Le informazioni che possono cambiare una decisione dello studio.</p>
+      </div>
+      <div class="profile"><span id="session-mode" class="label">DEMO</span><span id="user-name" class="small">Demo studio</span></div>
+    </div>
 
-<section class="app-grid"><div class="app-card"><div class="section-head"><div><b>Radar di oggi</b><div class="muted small">Ordinato per impatto sullo studio</div></div><button class="btn">Filtri</button></div><div class="feed"><div class="feed-item"><div class="feed-icon">!</div><div><h4>Safety signal su una categoria imaging</h4><p>Fonte ufficiale disponibile. Verifica device interessati e azione richiesta.</p></div><span class="label red">SAFETY</span></div><div class="feed-item"><div class="feed-icon">€</div><div><h4>Agevolazione potenzialmente compatibile con attrezzature</h4><p>Il profilo demo soddisfa alcuni requisiti iniziali. Mancano ancora verifiche documentali.</p></div><span class="label orange">BANDO</span></div><div class="feed-item"><div class="feed-icon">↗</div><div><h4>Chairside 3D printing accelera</h4><p>Più vendor, hardware più rapido e disponibilità di materiali. Italy Readiness 82/100.</p></div><span class="label green">TREND</span></div><div class="feed-item"><div class="feed-icon">↓</div><div><h4>Nuove osservazioni sui prezzi degli scanner</h4><p>La fascia value e mid-market si sta muovendo: confronta prima di chiedere un preventivo.</p></div><span class="label">BUY SMART</span></div></div></div>
+    <label class="mobile-search">
+      <i data-lucide="search"></i>
+      <input id="global-search" placeholder="Cerca prodotto, bando, tecnologia..." autocomplete="off">
+    </label>
 
-<div style="display:grid;gap:12px"><div class="app-card" id="radar"><div class="section-head"><b>Opportunity Radar</b><span class="yellow-dot"></span></div><div class="opportunity-scroll desktop-opps"><div class="opportunity"><span class="label green">SCALING</span><div class="score">83</div><b>AI imaging</b><p class="muted small">Evidence forte, adozione in crescita.</p></div><div class="opportunity"><span class="label green">SCALING</span><div class="score">82</div><b>3D printing</b><p class="muted small">Costi e tempi in riduzione.</p></div><div class="opportunity"><span class="label">ADOPTION</span><div class="score">79</div><b>Remote monitoring</b><p class="muted small">Interessante per ortodonzia.</p></div></div></div>
-<div class="ask-card" id="ask"><b>Ask IBEH</b><p>Fai una domanda a tutto il radar.</p><input class="input" placeholder="Scanner sotto €10.000"><button class="btn yellow full" style="margin-top:8px">Chiedi</button></div></div></section>
+    <div class="quick-actions">
+      <button class="quick-action" data-go="products"><span class="quick-icon"><i data-lucide="package-search"></i></span><span><b>Prodotti</b><small>Confronta prezzi e TCO</small></span><i data-lucide="chevron-right"></i></button>
+      <button class="quick-action" data-go="grants"><span class="quick-icon"><i data-lucide="landmark"></i></span><span><b>Bandi</b><small>Opportunità da verificare</small></span><i data-lucide="chevron-right"></i></button>
+      <button class="quick-action" data-go="radar"><span class="quick-icon"><i data-lucide="radar"></i></span><span><b>World Radar</b><small>Trend prima che arrivino</small></span><i data-lucide="chevron-right"></i></button>
+      <button class="quick-action" data-go="safety"><span class="quick-icon"><i data-lucide="shield-alert"></i></span><span><b>Safety</b><small>Avvisi e recall</small></span><i data-lucide="chevron-right"></i></button>
+    </div>
 
-<section id="products" style="margin-top:12px"><div class="app-card"><div class="section-head"><div><b>Prodotti osservati</b><div class="muted small">Snapshot MVP</div></div><a class="btn" href="#">Tutti</a></div><div class="products-mobile desktop-products"><div class="product-mini"><span class="label green">SCANNER</span><h3>Medit i700</h3><p class="muted small">Prezzo osservato</p><b>€7.900</b><p class="muted small">TCO €10.300</p></div><div class="product-mini"><span class="label green">SCANNER</span><h3>Aoralscan 3</h3><p class="muted small">Prezzo osservato</p><b>€6.200</b><p class="muted small">TCO €8.100</p></div><div class="product-mini"><span class="label">3D</span><h3>Form 4B</h3><p class="muted small">Prezzo osservato</p><b>€6.499</b><p class="muted small">TCO €14.900</p></div><div class="product-mini"><span class="label">CBCT</span><h3>Planmeca Viso</h3><p class="muted small">Prezzo osservato</p><b>€72.000</b><p class="muted small">TCO €98.000</p></div></div></div></section>
-</main></div>
-<nav class="mobile-bottom" aria-label="Navigazione app"><a class="active" href="#today"><span class="nav-ico">⌂</span><span>Oggi</span></a><a href="#radar"><span class="nav-ico">↗</span><span>Radar</span></a><a href="#products"><span class="nav-ico">◫</span><span>Prodotti</span></a><a href="#money"><span class="nav-ico">€</span><span>Bandi</span></a><a href="#ask"><span class="nav-ico">⌕</span><span>Ask</span></a></nav>
-<script>
-document.querySelectorAll('.mobile-bottom a').forEach(function(a){
-  a.addEventListener('click',function(){
-    document.querySelectorAll('.mobile-bottom a').forEach(function(x){x.classList.remove('active')});
-    this.classList.add('active');
-  });
-});
-</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script><script src="../assets/supabase.js"></script><script>IBEHAuth.mountApp();</script></body></html>
+    <div class="app-editorial-media">
+      <img src="../assets/images/dentist-analytics.svg" alt="Dentista che consulta dati digitali">
+      <div><b>Il tuo radar, senza rumore.</b><span>Fonti e segnali ordinati per impatto.</span></div>
+    </div>
+
+    <div class="section-head app-section-head">
+      <div><span class="screen-kicker">Priorità</span><h2>Da guardare oggi</h2></div>
+      <button class="text-action" id="filter-toggle"><i data-lucide="sliders-horizontal"></i>Filtri</button>
+    </div>
+    <div class="filter-panel" id="filter-panel" hidden>
+      <button class="chip active" data-filter="all">Tutto</button>
+      <button class="chip" data-filter="safety">Safety</button>
+      <button class="chip" data-filter="grant">Bandi</button>
+      <button class="chip" data-filter="trend">Trend</button>
+      <button class="chip" data-filter="buy">Buy Smart</button>
+    </div>
+    <div class="priority-list" id="priority-list">
+      <button class="priority-row" data-kind="safety" data-detail="safety-imaging">
+        <span class="row-icon danger"><i data-lucide="shield-alert"></i></span>
+        <span class="row-copy"><b>Safety signal su imaging</b><small>Fonte ufficiale disponibile. Verifica se riguarda i tuoi device.</small><em>SAFETY</em></span>
+        <i data-lucide="chevron-right"></i>
+      </button>
+      <button class="priority-row" data-kind="grant" data-detail="grant-equipment">
+        <span class="row-icon warm"><i data-lucide="landmark"></i></span>
+        <span class="row-copy"><b>Agevolazione per attrezzature</b><small>Compatibilità preliminare: servono ancora verifiche documentali.</small><em>BANDO</em></span>
+        <i data-lucide="chevron-right"></i>
+      </button>
+      <button class="priority-row" data-kind="trend" data-detail="trend-3d">
+        <span class="row-icon"><i data-lucide="radar"></i></span>
+        <span class="row-copy"><b>Chairside 3D printing accelera</b><small>Più vendor, hardware più rapido, materiali più accessibili.</small><em>TREND</em></span>
+        <i data-lucide="chevron-right"></i>
+      </button>
+      <button class="priority-row" data-kind="buy" data-detail="price-scanners">
+        <span class="row-icon"><i data-lucide="badge-euro"></i></span>
+        <span class="row-copy"><b>Scanner: fascia value in movimento</b><small>Confronta prima di chiedere un nuovo preventivo.</small><em>BUY SMART</em></span>
+        <i data-lucide="chevron-right"></i>
+      </button>
+    </div>
+  </section>
+
+  <section class="app-view" data-view="radar">
+    <div class="screen-head"><div><span class="screen-kicker">Intelligence</span><h1>World Radar</h1><p>Trend globali ordinati per readiness e vicinanza all'Italia.</p></div></div>
+    <div class="metric-row"><div><b>7</b><span>trend attivi</span></div><div><b>3</b><span>da monitorare</span></div><div><b>2</b><span>scaling</span></div></div>
+    <div class="stack-list">
+      <button class="data-card" data-detail="trend-ai"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">83</span></div><h3>AI imaging</h3><p>Evidence forte, adozione crescente e più integrazioni software.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
+      <button class="data-card" data-detail="trend-3d"><div class="data-card-top"><span class="label green">SCALING</span><span class="score">82</span></div><h3>Chairside 3D printing</h3><p>Costi e tempi in riduzione; più casi d'uso alla poltrona.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
+      <button class="data-card" data-detail="trend-remote"><div class="data-card-top"><span class="label">ADOPTION</span><span class="score">79</span></div><h3>Remote monitoring</h3><p>Segnale interessante soprattutto per ortodonzia e follow-up.</p><span class="card-link">Apri analisi <i data-lucide="arrow-right"></i></span></button>
+    </div>
+  </section>
+
+  <section class="app-view" data-view="products">
+    <div class="screen-head"><div><span class="screen-kicker">Buy Smart</span><h1>Prodotti</h1><p>Confronta prezzo osservato, TCO e contesto prima di acquistare.</p></div></div>
+    <label class="mobile-search"><i data-lucide="search"></i><input id="product-search" placeholder="Cerca scanner, CBCT, 3D..."></label>
+    <div class="filter-panel always">
+      <button class="chip active" data-product-filter="all">Tutti</button>
+      <button class="chip" data-product-filter="scanner">Scanner</button>
+      <button class="chip" data-product-filter="3d">3D</button>
+      <button class="chip" data-product-filter="cbct">CBCT</button>
+    </div>
+    <div class="product-list" id="product-list">
+      <button class="product-row" data-category="scanner" data-product="Medit i700" data-price="€7.900" data-tco="€10.300"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Medit i700</b><span>Prezzo osservato <strong>€7.900</strong> · TCO €10.300</span></span><i data-lucide="chevron-right"></i></button>
+      <button class="product-row" data-category="scanner" data-product="Aoralscan 3" data-price="€6.200" data-tco="€8.100"><span class="product-thumb"><i data-lucide="scan-line"></i></span><span class="product-copy"><small>SCANNER</small><b>Aoralscan 3</b><span>Prezzo osservato <strong>€6.200</strong> · TCO €8.100</span></span><i data-lucide="chevron-right"></i></button>
+      <button class="product-row" data-category="3d" data-product="Form 4B" data-price="€6.499" data-tco="€14.900"><span class="product-thumb"><i data-lucide="box"></i></span><span class="product-copy"><small>3D PRINTING</small><b>Form 4B</b><span>Prezzo osservato <strong>€6.499</strong> · TCO €14.900</span></span><i data-lucide="chevron-right"></i></button>
+      <button class="product-row" data-category="cbct" data-product="Planmeca Viso" data-price="€72.000" data-tco="€98.000"><span class="product-thumb"><i data-lucide="circle-dot"></i></span><span class="product-copy"><small>CBCT</small><b>Planmeca Viso</b><span>Prezzo osservato <strong>€72.000</strong> · TCO €98.000</span></span><i data-lucide="chevron-right"></i></button>
+    </div>
+  </section>
+
+  <section class="app-view" data-view="grants">
+    <div class="screen-head"><div><span class="screen-kicker">Money Radar</span><h1>Bandi</h1><p>Opportunità da verificare in base agli investimenti dello studio.</p></div></div>
+    <div class="stack-list">
+      <button class="data-card" data-detail="grant-equipment"><div class="data-card-top"><span class="label orange">DA VERIFICARE</span><span class="deadline">12 gg</span></div><h3>Attrezzature e digitalizzazione</h3><p>Compatibilità preliminare positiva su alcune categorie di investimento.</p><span class="card-link">Vedi requisiti <i data-lucide="arrow-right"></i></span></button>
+      <button class="data-card" data-detail="grant-training"><div class="data-card-top"><span class="label">FORMAZIONE</span><span class="deadline">28 gg</span></div><h3>Formazione e competenze digitali</h3><p>Possibile pertinenza per percorsi di aggiornamento del team.</p><span class="card-link">Vedi requisiti <i data-lucide="arrow-right"></i></span></button>
+    </div>
+  </section>
+
+  <section class="app-view" data-view="ask">
+    <div class="screen-head"><div><span class="screen-kicker">Ask IBEH</span><h1>Chiedi al radar</h1><p>Cerca dentro i dati presenti nella demo. La risposta AI completa verrà collegata al backend.</p></div></div>
+    <div class="ask-screen">
+      <div class="ask-suggestions">
+        <button data-question="scanner sotto 10000">Scanner sotto €10.000</button>
+        <button data-question="bandi attrezzature">Bandi per attrezzature</button>
+        <button data-question="trend 3d printing">Trend 3D printing</button>
+      </div>
+      <div class="chat-stream" id="chat-stream"><div class="chat-bubble system">Scrivi una domanda: nella build attuale cerco tra prodotti, bandi e trend demo.</div></div>
+      <form id="ask-form" class="ask-compose"><input id="ask-input" placeholder="Es. scanner sotto €10.000"><button type="submit" aria-label="Invia"><i data-lucide="arrow-up"></i></button></form>
+    </div>
+  </section>
+
+  <section class="app-view" data-view="compare"><div class="empty-screen"><i data-lucide="scale"></i><h1>Confronta</h1><p>Seleziona due prodotti dalla schermata Prodotti. Il confronto dettagliato sarà collegato ai dati reali nel prossimo step.</p><button class="btn primary" data-go="products">Vai ai prodotti</button></div></section>
+  <section class="app-view" data-view="quotes"><div class="empty-screen"><i data-lucide="file-text"></i><h1>Preventivi</h1><p>Qui entreranno upload, estrazione voci e confronto con prezzi osservati. Non mostriamo un'analisi finta finché il backend non è collegato.</p></div></section>
+  <section class="app-view" data-view="events"><div class="empty-screen"><i data-lucide="calendar-days"></i><h1>Eventi & ECM</h1><p>Schermata pronta per calendario, filtri per specializzazione e salvataggi.</p></div></section>
+  <section class="app-view" data-view="safety"><div class="screen-head"><div><span class="screen-kicker">Safety Watch</span><h1>Safety</h1><p>Avvisi e recall che richiedono verifica.</p></div></div><div class="stack-list"><button class="data-card" data-detail="safety-imaging"><div class="data-card-top"><span class="label red">ALERT</span><span class="deadline">Nuovo</span></div><h3>Categoria imaging</h3><p>Segnale demo collegato a una fonte ufficiale da verificare.</p><span class="card-link">Apri alert <i data-lucide="arrow-right"></i></span></button></div></section>
+  <section class="app-view" data-view="saved"><div class="screen-head"><div><span class="screen-kicker">Workspace</span><h1>Salvati</h1><p>Prodotti e segnali salvati su questo dispositivo o sul tuo account.</p></div></div><div id="saved-list" class="stack-list"></div></section>
+  <section class="app-view" data-view="settings"><div class="empty-screen"><i data-lucide="settings"></i><h1>Impostazioni</h1><p>Profilo, studio, preferenze e notifiche verranno gestiti qui.</p></div></section>
+
+  <section class="app-view detail-view" data-view="detail">
+    <div id="detail-content"></div>
+  </section>
+</main>
+</div>
+
+<nav class="mobile-bottom" aria-label="Navigazione app">
+  <button class="active" data-go="today"><i data-lucide="house"></i><span>Oggi</span></button>
+  <button data-go="radar"><i data-lucide="radar"></i><span>Radar</span></button>
+  <button data-go="products"><i data-lucide="package-search"></i><span>Prodotti</span></button>
+  <button data-go="grants"><i data-lucide="landmark"></i><span>Bandi</span></button>
+  <button data-go="ask"><i data-lucide="sparkles"></i><span>Ask</span></button>
+</nav>
+
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
+<script src="../assets/supabase.js"></script>
+<script src="../assets/app.js"></script>
+<script>IBEHAuth.mountApp();</script>
+</body>
+</html>
