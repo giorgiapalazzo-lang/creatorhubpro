@@ -1,55 +1,17 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fbfcfc"><title>IBEH App</title><link rel="stylesheet" href="../assets/styles.css"></head><body>
-<header class="mobile-app-header"><a class="logo" href="../"><span class="mark"></span>IBEH</a><div class="status"><span class="pulse-dot"></span> SYSTEM ONLINE</div></header>
-<div class="app-shell">
-<aside class="app-side"><div class="app-brand"><a class="logo" href="../"><span class="mark"></span>IBEH</a></div><nav class="app-nav">
-<a class="active" href="#">⌂ Oggi</a><a href="#">◫ Prodotti</a><a href="#">⇄ Confronta</a><a href="#">▤ Preventivi</a>
-<div class="group">Intelligence</div><a href="#">↗ World Radar</a><a href="#">€ Bandi</a><a href="#">◷ Eventi & ECM</a><a href="#">! Safety</a>
-<div class="group">Workspace</div><a href="#">★ Salvati</a><a href="#">⌕ Ask IBEH</a><a href="#">⚙ Impostazioni</a></nav></aside>
-
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff"><title>IBEH App</title><link rel="stylesheet" href="../assets/styles.css"></head><body>
+<header class="mobile-app-header"><a class="logo" href="../"><span class="mark"></span>IBEH</a><div class="header-actions"><a class="icon-btn" href="#ask" aria-label="Ask IBEH">⌕</a><div class="avatar" aria-label="Profilo demo"></div></div></header>
+<div class="app-shell"><aside class="app-side"><div class="app-brand"><a class="logo" href="../"><span class="mark"></span>IBEH</a></div><nav class="app-nav"><a class="active" href="#today">⌂ Oggi</a><a href="#products">◫ Prodotti</a><a href="#products">⇄ Confronta</a><a href="#">▤ Preventivi</a><div class="group">Intelligence</div><a href="#radar">↗ World Radar</a><a href="#money">€ Bandi</a><a href="#">◷ Eventi & ECM</a><a href="#">! Safety</a><div class="group">Workspace</div><a href="#">★ Salvati</a><a href="#ask">⌕ Ask IBEH</a><a href="#">⚙ Impostazioni</a></nav></aside>
 <main class="app-main">
-<div class="app-top">
-<div class="app-title-row"><div><h2 style="margin:0">Buongiorno.</h2><div class="muted small">Brief operativo · <span class="date">29.09.2026 / 06:48</span></div></div><div class="profile"><div class="avatar"></div><span class="small"><b>Demo studio</b></span></div></div>
-<div class="app-search"><input placeholder="Cerca prodotti, bandi, trend, safety..."></div>
-</div>
+<section id="today"><div class="app-top"><div class="app-title-row"><div><h2>Buongiorno.</h2><div class="muted small">Quattro cose meritano attenzione oggi.</div></div><div class="profile"><span class="label green">LIVE</span></div></div><div class="app-search"><input placeholder="Cerca prodotto, bando, tecnologia..."></div></div>
+<div class="app-clinical-strip"><img src="../assets/images/dentist-analytics.svg" alt="Dentista che consulta dati digitali"><div class="overlay"><b>Il tuo radar, senza rumore.</b><span>Fonti, segnali e opportunità ordinati per impatto.</span></div></div>
+<div class="app-kpis"><div class="app-card"><div class="muted small">Alert prioritari</div><div class="value">3</div><span class="label red">+1 oggi</span></div><div class="app-card"><div class="muted small">Prodotti seguiti</div><div class="value">12</div><span class="label green">2 cambi prezzo</span></div><div class="app-card" id="money"><div class="muted small">Bandi compatibili</div><div class="value">4</div><span class="label orange">1 in scadenza</span></div><div class="app-card"><div class="muted small">Italy Next</div><div class="value">7</div><span class="label">trend attivi</span></div></div></section>
 
-<div class="app-clinical-strip"><img src="../assets/images/analytics-dentist.webp" alt="Dentista che usa sistemi digitali" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1777331903190-341a3dd0441b?auto=format&fit=crop&q=72&w=600'"><div><b>IBEH DAILY CLINICAL BRIEF</b><p>3 segnali prioritari rilevati tra fonti regolatorie, mercato e procurement.</p></div></div>
+<section class="app-grid"><div class="app-card"><div class="section-head"><div><b>Radar di oggi</b><div class="muted small">Ordinato per impatto sullo studio</div></div><button class="btn">Filtri</button></div><div class="feed"><div class="feed-item"><div class="feed-icon">!</div><div><h4>Safety signal su una categoria imaging</h4><p>Fonte ufficiale disponibile. Verifica device interessati e azione richiesta.</p></div><span class="label red">SAFETY</span></div><div class="feed-item"><div class="feed-icon">€</div><div><h4>Agevolazione potenzialmente compatibile con attrezzature</h4><p>Il profilo demo soddisfa alcuni requisiti iniziali. Mancano ancora verifiche documentali.</p></div><span class="label orange">BANDO</span></div><div class="feed-item"><div class="feed-icon">↗</div><div><h4>Chairside 3D printing accelera</h4><p>Più vendor, hardware più rapido e disponibilità di materiali. Italy Readiness 82/100.</p></div><span class="label green">TREND</span></div><div class="feed-item"><div class="feed-icon">↓</div><div><h4>Nuove osservazioni sui prezzi degli scanner</h4><p>La fascia value e mid-market si sta muovendo: confronta prima di chiedere un preventivo.</p></div><span class="label">BUY SMART</span></div></div></div>
 
-<section class="app-kpis">
-<div class="app-card"><div class="muted small">Alert prioritari</div><div class="value">03</div><div class="label red">+01 / 24H</div></div>
-<div class="app-card"><div class="muted small">Prodotti seguiti</div><div class="value">12</div><div class="label green">02 PRICE Δ</div></div>
-<div class="app-card"><div class="muted small">Bandi compatibili</div><div class="value">04</div><div class="deadline"><span class="pulse-dot warning"></span><span>01 · 09D LEFT</span></div></div>
-<div class="app-card"><div class="muted small">Italy Next</div><div class="value">07</div><div class="label">TREND ACTIVE</div></div>
-</section>
+<div style="display:grid;gap:12px"><div class="app-card" id="radar"><div class="section-head"><b>Opportunity Radar</b><span class="yellow-dot"></span></div><div class="opportunity-scroll desktop-opps"><div class="opportunity"><span class="label green">SCALING</span><div class="score">83</div><b>AI imaging</b><p class="muted small">Evidence forte, adozione in crescita.</p></div><div class="opportunity"><span class="label green">SCALING</span><div class="score">82</div><b>3D printing</b><p class="muted small">Costi e tempi in riduzione.</p></div><div class="opportunity"><span class="label">ADOPTION</span><div class="score">79</div><b>Remote monitoring</b><p class="muted small">Interessante per ortodonzia.</p></div></div></div>
+<div class="ask-card" id="ask"><b>Ask IBEH</b><p>Fai una domanda a tutto il radar.</p><input class="input" placeholder="Scanner sotto €10.000"><button class="btn yellow full" style="margin-top:8px">Chiedi</button></div></div></section>
 
-<section class="app-grid">
-<div class="app-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b>RADAR DI OGGI</b><div class="muted small">Ordinato per impatto sullo studio</div></div><button class="btn">FILTRI</button></div>
-<div class="feed">
-<div class="feed-item"><div class="feed-icon">!</div><div><h4>Safety signal su device della categoria imaging</h4><p>Fonte ufficiale disponibile. Verifica dispositivi interessati e action required.</p><div class="date" style="margin-top:6px">29.09.26 / 05:42</div></div><span class="label red">SAFETY</span></div>
-<div class="feed-item"><div class="feed-icon">€</div><div><h4>Agevolazione per investimento in attrezzatura</h4><p>Il profilo demo soddisfa alcuni requisiti iniziali. La deadline è vicina.</p><div class="deadline" style="margin-top:7px"><span class="pulse-dot warning"></span><span>SCADENZA · 08.10.26</span></div></div><span class="label orange">BANDO</span></div>
-<div class="feed-item"><div class="feed-icon">↗</div><div><h4>Chairside 3D printing: momentum globale ↑</h4><p>Più vendor, hardware più rapido e maggiore disponibilità di materiali.</p><div class="date" style="margin-top:6px">READINESS · 82/100</div></div><span class="label green">TREND</span></div>
-<div class="feed-item"><div class="feed-icon">↓</div><div><h4>Range prezzo scanner intraorali aggiornato</h4><p>Nuove osservazioni nella fascia value e mid-market.</p><div class="money-line" style="margin-top:6px">€4.800 — €29.400</div></div><span class="label">BUY SMART</span></div>
-</div></div>
-
-<div style="display:grid;gap:12px">
-<div class="app-card"><div style="display:flex;justify-content:space-between"><b>OPPORTUNITY RADAR</b><span class="pulse-dot"></span></div><div class="mock-row"><span>AI imaging</span><b class="metric">83</b></div><div class="mock-row"><span>3D printing</span><b class="metric">82</b></div><div class="mock-row"><span>Remote monitoring</span><b class="metric">79</b></div><div class="graph-mini" style="margin-top:10px"></div></div>
-<div class="app-card"><b>ASK IBEH</b><p class="muted small">Una query, tutte le fonti del prodotto.</p><input class="input" placeholder="Scanner sotto €10.000"><button class="btn primary full" style="margin-top:8px">CHIEDI</button></div>
-</div>
-</section>
-
-<section style="margin-top:12px"><div class="app-card"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>PRODOTTI OSSERVATI</b><div class="muted small">Snapshot procurement</div></div><a class="btn" href="#">VEDI TUTTI</a></div>
-<div class="feature-grid" style="margin-top:12px">
-<div class="feature" style="min-height:0"><span class="label green">SCANNER</span><h3>Medit i700</h3><p><span class="amount">€7.900</span><br>TCO <span class="amount">€10.300</span></p></div>
-<div class="feature" style="min-height:0"><span class="label green">SCANNER</span><h3>Aoralscan 3</h3><p><span class="amount">€6.200</span><br>TCO <span class="amount">€8.100</span></p></div>
-<div class="feature" style="min-height:0"><span class="label">3D</span><h3>Form 4B</h3><p><span class="amount">€6.499</span><br>TCO <span class="amount">€14.900</span></p></div>
-<div class="feature" style="min-height:0"><span class="label">CBCT</span><h3>Planmeca Viso</h3><p><span class="amount">€72.000</span><br>TCO <span class="amount">€98.000</span></p></div>
-</div></div></section>
+<section id="products" style="margin-top:12px"><div class="app-card"><div class="section-head"><div><b>Prodotti osservati</b><div class="muted small">Snapshot MVP</div></div><a class="btn" href="#">Tutti</a></div><div class="products-mobile desktop-products"><div class="product-mini"><span class="label green">SCANNER</span><h3>Medit i700</h3><p class="muted small">Prezzo osservato</p><b>€7.900</b><p class="muted small">TCO €10.300</p></div><div class="product-mini"><span class="label green">SCANNER</span><h3>Aoralscan 3</h3><p class="muted small">Prezzo osservato</p><b>€6.200</b><p class="muted small">TCO €8.100</p></div><div class="product-mini"><span class="label">3D</span><h3>Form 4B</h3><p class="muted small">Prezzo osservato</p><b>€6.499</b><p class="muted small">TCO €14.900</p></div><div class="product-mini"><span class="label">CBCT</span><h3>Planmeca Viso</h3><p class="muted small">Prezzo osservato</p><b>€72.000</b><p class="muted small">TCO €98.000</p></div></div></div></section>
 </main></div>
-
-<nav class="mobile-bottom" aria-label="Navigazione app">
-<a class="active" href="#"><span class="nav-ico">⌂</span><span>Oggi</span></a>
-<a href="#"><span class="nav-ico">◫</span><span>Prodotti</span></a>
-<a href="#"><span class="nav-ico">↗</span><span>Radar</span></a>
-<a href="#"><span class="nav-ico">€</span><span>Bandi</span></a>
-<a href="#"><span class="nav-ico">⌕</span><span>Ask</span></a>
-</nav>
+<nav class="mobile-bottom" aria-label="Navigazione app"><a class="active" href="#today"><span class="nav-ico">⌂</span><span>Oggi</span></a><a href="#radar"><span class="nav-ico">↗</span><span>Radar</span></a><a href="#products"><span class="nav-ico">◫</span><span>Prodotti</span></a><a href="#money"><span class="nav-ico">€</span><span>Bandi</span></a><a href="#ask"><span class="nav-ico">⌕</span><span>Ask</span></a></nav>
 </body></html>
