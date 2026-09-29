@@ -14,4 +14,11 @@
 <section id="products" style="margin-top:12px"><div class="app-card"><div class="section-head"><div><b>Prodotti osservati</b><div class="muted small">Snapshot MVP</div></div><a class="btn" href="#">Tutti</a></div><div class="products-mobile desktop-products"><div class="product-mini"><span class="label green">SCANNER</span><h3>Medit i700</h3><p class="muted small">Prezzo osservato</p><b>€7.900</b><p class="muted small">TCO €10.300</p></div><div class="product-mini"><span class="label green">SCANNER</span><h3>Aoralscan 3</h3><p class="muted small">Prezzo osservato</p><b>€6.200</b><p class="muted small">TCO €8.100</p></div><div class="product-mini"><span class="label">3D</span><h3>Form 4B</h3><p class="muted small">Prezzo osservato</p><b>€6.499</b><p class="muted small">TCO €14.900</p></div><div class="product-mini"><span class="label">CBCT</span><h3>Planmeca Viso</h3><p class="muted small">Prezzo osservato</p><b>€72.000</b><p class="muted small">TCO €98.000</p></div></div></div></section>
 </main></div>
 <nav class="mobile-bottom" aria-label="Navigazione app"><a class="active" href="#today"><span class="nav-ico">⌂</span><span>Oggi</span></a><a href="#radar"><span class="nav-ico">↗</span><span>Radar</span></a><a href="#products"><span class="nav-ico">◫</span><span>Prodotti</span></a><a href="#money"><span class="nav-ico">€</span><span>Bandi</span></a><a href="#ask"><span class="nav-ico">⌕</span><span>Ask</span></a></nav>
-</body></html>
+<script>
+document.querySelectorAll('.mobile-bottom a').forEach(function(a){
+  a.addEventListener('click',function(){
+    document.querySelectorAll('.mobile-bottom a').forEach(function(x){x.classList.remove('active')});
+    this.classList.add('active');
+  });
+});
+</script></body></html>
