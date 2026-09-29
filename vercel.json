@@ -1,10 +1,17 @@
-
 {
   "version": 2,
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
+    },
+    {
+      "source": "/ibeh",
+      "destination": "/ibeh/index.html"
+    },
+    {
+      "source": "/ibeh/",
+      "destination": "/ibeh/index.html"
     },
     {
       "source": "/(.*)",
