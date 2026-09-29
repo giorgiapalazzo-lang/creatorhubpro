@@ -1,21 +1,24 @@
 {
   "version": 2,
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/ibeh",
-      "destination": "/ibeh/index.html"
-    },
-    {
-      "source": "/ibeh/",
-      "destination": "/ibeh/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    {"source": "/api/(.*)", "destination": "/api/$1"},
+    {"source": "/ibeh", "destination": "/ibeh/index.html"},
+    {"source": "/ibeh/", "destination": "/ibeh/index.html"},
+    {"source": "/ibeh/how-it-works", "destination": "/ibeh/how-it-works/index.html"},
+    {"source": "/ibeh/how-it-works/", "destination": "/ibeh/how-it-works/index.html"},
+    {"source": "/ibeh/about", "destination": "/ibeh/about/index.html"},
+    {"source": "/ibeh/about/", "destination": "/ibeh/about/index.html"},
+    {"source": "/ibeh/contact", "destination": "/ibeh/contact/index.html"},
+    {"source": "/ibeh/contact/", "destination": "/ibeh/contact/index.html"},
+    {"source": "/ibeh/login", "destination": "/ibeh/login/index.html"},
+    {"source": "/ibeh/login/", "destination": "/ibeh/login/index.html"},
+    {"source": "/ibeh/signin", "destination": "/ibeh/login/index.html"},
+    {"source": "/ibeh/signin/", "destination": "/ibeh/login/index.html"},
+    {"source": "/ibeh/signup", "destination": "/ibeh/signup/index.html"},
+    {"source": "/ibeh/signup/", "destination": "/ibeh/signup/index.html"},
+    {"source": "/ibeh/app", "destination": "/ibeh/app/index.html"},
+    {"source": "/ibeh/app/", "destination": "/ibeh/app/index.html"},
+    {"source": "/ibeh/assets/(.*)", "destination": "/ibeh/assets/$1"},
+    {"source": "/(.*)", "destination": "/index.html"}
   ]
 }
